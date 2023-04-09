@@ -7,7 +7,7 @@ import sistemaAutogestion.Retorno.Resultado;
 public class Prueba {
 
 	static int	cantCorrectas, cantIncorrectas, cantNoImplementadas;
-	void inicializarResultadosPrueba() {
+	public void inicializarResultadosPrueba() {
 		cantCorrectas = cantIncorrectas = cantNoImplementadas = 0;
 	}
 
@@ -31,7 +31,7 @@ public class Prueba {
 		}
 	}
 
-	void imprimirComentario(String comentario)
+	public void imprimirComentario(String comentario)
 	{
 		if ( comentario!=null || !comentario.isEmpty())
 			System.out.println("\n  Comentario: " + comentario );
@@ -76,7 +76,7 @@ public class Prueba {
 		}
 	}
 
-	void imprimirResultadosPrueba()
+	public void imprimirResultadosPrueba()
 	{
 		System.out.println();
 		System.out.println( "  +------------------------------+");

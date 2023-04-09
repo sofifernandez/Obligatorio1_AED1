@@ -1,15 +1,32 @@
 package sistemaAutogestion;
+import tads.*;
+import clases.*;
 
 public class Sistema implements IObligatorio {
+    
+    private ListaSimple listaClientes;
 
     @Override
     public Retorno crearSistemaDeAutoservicio(int maxUnidadesDePedido) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Retorno r= new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if(maxUnidadesDePedido<=3){
+            r.resultado= Retorno.Resultado.ERROR_1;
+        } else{
+            listaClientes= new ListaSimple();
+            r.resultado= Retorno.Resultado.OK;
+        }
+        return r;
     }
 
     @Override
     public Retorno agregarCliente(String nombre, String ci, int tel) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Retorno r= new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if(listaClientes.existeDato(new Cliente(nombre, rut))){
+            r.resultado= Retorno.Resultado.ERROR_1;
+        } else{
+            listaClientes.agregarInicio(new Cliente(nombre, rut));
+            r.resultado= Retorno.Resultado.OK;
+        }
     }
 
     @Override
