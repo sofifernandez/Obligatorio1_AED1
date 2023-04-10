@@ -1,6 +1,5 @@
 package tads;
 
-
 public class ListaSimple<T> implements ILista<T> {
 
     private Nodo inicio;
@@ -25,7 +24,7 @@ public class ListaSimple<T> implements ILista<T> {
     public void agregarFinal(T n) {
         Nodo nuevo = new Nodo(n);
         Nodo aux = inicio;
-        if(!esVacia()){
+        if (!esVacia()) {
             while (aux.getSiguiente() != null) {
                 aux = aux.getSiguiente();
             }
@@ -44,7 +43,7 @@ public class ListaSimple<T> implements ILista<T> {
     @Override
     public void borrarFin() {
         Nodo aux = inicio;
-        if(!esVacia()){
+        if (!esVacia()) {
             while (aux.getSiguiente().getSiguiente() != null) {
                 aux = aux.getSiguiente();
             }
@@ -67,11 +66,29 @@ public class ListaSimple<T> implements ILista<T> {
                 System.out.print(aux.getDato() + " ");
                 aux = aux.getSiguiente();
             }
-        }
-        else{
+        } else {
             System.out.println("Esta vacia!");
         }
 
+    }
+
+    @Override
+    public boolean existeDato(T dato) {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean existe= false;
+        Nodo nuevo = new Nodo(dato);
+        Nodo aux = inicio;
+        if (!esVacia()) {
+            while (aux!= null) {
+                if(aux.equals(nuevo)){
+                    return true;
+                } else{
+                    //System.out.println("*****************************************PRUEBAAAAAAAA");
+                    aux = aux.getSiguiente();
+                }
+            }
+        }
+        return existe;
     }
 
     /**
@@ -87,10 +104,4 @@ public class ListaSimple<T> implements ILista<T> {
     public void setInicio(Nodo inicio) {
         this.inicio = inicio;
     }
-
-    @Override
-    public boolean existeDato(T dato) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }

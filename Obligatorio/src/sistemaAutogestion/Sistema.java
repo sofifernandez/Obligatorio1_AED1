@@ -23,12 +23,14 @@ public class Sistema implements IObligatorio {
     @Override
     public Retorno agregarCliente(String nombre, String ci, int tel) {
         Retorno r= new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
-        if(listaClientes.existeDato(new Cliente(nombre, rut))){
+        if(listaClientes.existeDato(new Cliente(nombre, ci))){
             r.resultado= Retorno.Resultado.ERROR_1;
         } else{
-            listaClientes.agregarInicio(new Cliente(nombre, rut));
+            listaClientes.agregarInicio(new Cliente(nombre, ci));
+            //System.out.println("PRUEBA");
             r.resultado= Retorno.Resultado.OK;
         }
+        return r;
     }
 
     @Override
