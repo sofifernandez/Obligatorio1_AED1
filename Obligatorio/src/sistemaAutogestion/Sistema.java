@@ -5,6 +5,8 @@ import clases.*;
 public class Sistema implements IObligatorio {
     
     private ListaSimple listaClientes;
+    private ListaSimple listaProductos;
+    private ListaSimple listaStockProducto;
 
     @Override
     public Retorno crearSistemaDeAutoservicio(int maxUnidadesDePedido) {

@@ -3,23 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package clases;
-import tads.ListaSimple;
 
 /**
  *
  * @author sofia
  */
-public class Cliente {
+public class Producto {
     private String nombre;
-    private String ci;
-    //private ListaSimple listaPedidos;
+    private String descripcion;
+
     
-    public Cliente (String nombre, String ci){
+    public Producto (String nombre, String descripcion){
         this.setNombre(nombre);
-        this.setCi(ci);
+        this.setDescripcion(descripcion);
         //listaPedidos = new ListaSimple();
     }
-
     /**
      * @return the nombre
      */
@@ -35,17 +33,18 @@ public class Cliente {
     }
 
     /**
-     * @return the ci
+     * @return the descripcion
      */
-    public String getCi() {
-        return ci;
+    public String getDescripcion() {
+        return descripcion;
     }
 
     /**
-     * @param ci the ci to set
+     * @param descripcion the descripcion to set
      */
-    public void setCi(String ci) {
-        this.ci = ci;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
+    
     
 }
