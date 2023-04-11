@@ -1,0 +1,2 @@
+- no funciona lo de evaluar si tiene pedidos el cliente antes de eliminar
+- no funciona el ID autoincremental de producto

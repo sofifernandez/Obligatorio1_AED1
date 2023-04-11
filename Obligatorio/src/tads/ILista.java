@@ -22,6 +22,14 @@ public interface ILista<T> {
 
     public void mostrar();
     
-    public boolean existeDato(T dato);
+     public void agregarOrd(T n);
+    
+    public int cantidadElementos();
+    
+    public boolean existeElemento(T n);
+    
+    public Nodo obtenerElemento(T n);
+    
+    public void eliminarElemento(T n);
 
 }

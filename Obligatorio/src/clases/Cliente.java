@@ -4,6 +4,8 @@
  */
 package clases;
 
+import tads.ListaSimple;
+
 
 
 /**
@@ -14,12 +16,18 @@ public class Cliente {
 
     private String nombre;
     private String ci;
-    //private ListaSimple listaPedidos;
+    private ListaSimple listaPedidos;
 
     public Cliente(String nombre, String ci) {
         this.setNombre(nombre);
         this.setCi(ci);
-        //listaPedidos = new ListaSimple();
+        listaPedidos = new ListaSimple(20);
+    }
+    
+    public Cliente(String ci) {
+        this.setNombre("");
+        this.setCi(ci);
+        listaPedidos = new ListaSimple(20);
     }
 
     //public boolean equals(Cliente obj) {
@@ -31,16 +39,13 @@ public class Cliente {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
         Cliente that = (Cliente) o;
-        System.out.println("*****************************************PRUEBAAAAAAAA");
-        System.out.println(getCi());
         return getCi().equals(that.getCi());
+    }
+    
+    @Override
+    public String toString() {
+        return "Cedula:" + this.getCi();
     }
 
     /**
@@ -69,6 +74,20 @@ public class Cliente {
      */
     public void setCi(String ci) {
         this.ci = ci;
+    }
+
+    /**
+     * @return the listaPedidos
+     */
+    public ListaSimple getListaPedidos() {
+        return listaPedidos;
+    }
+
+    /**
+     * @param listaPedidos the listaPedidos to set
+     */
+    public void setListaPedidos(ListaSimple listaPedidos) {
+        this.listaPedidos = listaPedidos;
     }
 
 }

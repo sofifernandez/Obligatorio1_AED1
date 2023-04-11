@@ -3,9 +3,17 @@ package tads;
 public class ListaSimple<T> implements ILista<T> {
 
     private Nodo inicio;
+    private int cantidad;
+    private int cantidadMax;
 
-    public ListaSimple() {
+    public ListaSimple(int cantMax) {
         inicio = null;
+        cantidad = 0;
+        cantidadMax = cantMax;
+    }
+
+    public boolean verificarCantidad() {
+        return cantidad < cantidadMax;
     }
 
     @Override
@@ -15,20 +23,34 @@ public class ListaSimple<T> implements ILista<T> {
 
     @Override
     public void agregarInicio(T n) {
-        Nodo nuevo = new Nodo(n);
-        nuevo.setSiguiente(getInicio());
-        setInicio(nuevo); //inicio = nuevo;  
+        if (verificarCantidad()) {
+            Nodo nuevo = new Nodo(n);
+            nuevo.setSiguiente(getInicio());
+            setInicio(nuevo); //inicio = nuevo;  
+            cantidad++;
+        } else {
+            System.out.println("Lista llena, no se pueden agregar más elementos");
+        }
     }
 
     @Override
     public void agregarFinal(T n) {
-        Nodo nuevo = new Nodo(n);
-        Nodo aux = inicio;
-        if (!esVacia()) {
-            while (aux.getSiguiente() != null) {
-                aux = aux.getSiguiente();
+        if (esVacia()) {
+            agregarInicio(n);
+        } else {
+
+            if (verificarCantidad()) {
+                Nodo nuevo = new Nodo(n);
+
+                Nodo aux = inicio;
+
+                while (aux.getSiguiente() != null) {
+                    aux = aux.getSiguiente();
+                }
+
+                aux.setSiguiente(nuevo);
+                cantidad++;
             }
-            aux.setSiguiente(nuevo);
         }
     }
 
@@ -37,6 +59,7 @@ public class ListaSimple<T> implements ILista<T> {
 
         if (!esVacia()) {
             inicio = inicio.getSiguiente();
+            cantidad--;
         }
     }
 
@@ -48,12 +71,14 @@ public class ListaSimple<T> implements ILista<T> {
                 aux = aux.getSiguiente();
             }
             aux.setSiguiente(null);
+            cantidad--;
         }
     }
 
     @Override
     public void vaciar() {
         inicio = null;
+        cantidad = 0;
     }
 
     @Override
@@ -63,7 +88,7 @@ public class ListaSimple<T> implements ILista<T> {
 
         if (!esVacia()) {
             while (aux != null) {
-                System.out.print(aux.getDato() + " ");
+                System.out.println(aux.getDato() + " ");
                 aux = aux.getSiguiente();
             }
         } else {
@@ -73,17 +98,16 @@ public class ListaSimple<T> implements ILista<T> {
     }
 
     @Override
-    public boolean existeDato(T dato) {
+    public boolean existeElemento(T n) {
         //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        boolean existe= false;
-        Nodo nuevo = new Nodo(dato);
-        Nodo aux = inicio;
+        boolean existe = false;
         if (!esVacia()) {
-            while (aux!= null) {
-                if(aux.equals(nuevo)){
+            Nodo nuevo = new Nodo(n);
+            Nodo aux = inicio;
+            while (aux != null) {
+                if (aux.getDato().equals(nuevo.getDato())) {
                     return true;
-                } else{
-                    //System.out.println("*****************************************PRUEBAAAAAAAA");
+                } else {
                     aux = aux.getSiguiente();
                 }
             }
@@ -91,7 +115,75 @@ public class ListaSimple<T> implements ILista<T> {
         return existe;
     }
 
-    /**
+
+    @Override
+    public void agregarOrd(T n) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        if (verificarCantidad()) {
+//            if (esVacia() || inicio.getDato() >= n) {
+//                agregarInicio(n);
+//            } else {
+//
+//                Nodo actual = inicio;
+//
+//                while (actual.getSiguiente() != null && actual.getSiguiente().getDato() < n) {
+//                    actual = actual.getSiguiente();
+//                }
+//
+//                if (actual.getSiguiente() == null) {
+//                    agregarFinal(n);
+//                } else {
+//                    Nodo nuevo = new Nodo(n);
+//                    Nodo sig = actual.getSiguiente();
+//                    actual.setSiguiente(nuevo);
+//                    nuevo.setSiguiente(sig);
+//                    cantidad++;
+//                }
+//
+//            }
+//        }
+    }
+
+    @Override
+    public int cantidadElementos() {
+        return cantidad;
+    }
+
+    @Override
+    public Nodo obtenerElemento(T n) {
+        if (!esVacia()) {
+            Nodo aux = inicio;
+            Nodo nuevo = new Nodo(n);
+            while(aux != null && !aux.getDato().equals(nuevo.getDato())){
+                aux=aux.getSiguiente();
+            }
+            if(aux!=null && aux.getDato().equals(nuevo.getDato())){
+                return aux;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void eliminarElemento(T n) {
+        if (!esVacia()) {
+            Nodo aux = inicio;
+            Nodo nuevo = new Nodo(n);
+            while(aux.getSiguiente() != null && !aux.getSiguiente().getDato().equals(nuevo.getDato())){
+                aux=aux.getSiguiente();
+            }
+            if(aux.getSiguiente()!=null && aux.getSiguiente().getDato().equals(nuevo.getDato())){
+                aux.setSiguiente(aux.getSiguiente().getSiguiente());
+                cantidad--;
+            }
+        }
+    }
+    
+    
+    
+    
+    
+        /**
      * @return the inicio
      */
     public Nodo getInicio() {

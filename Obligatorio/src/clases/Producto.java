@@ -9,15 +9,34 @@ package clases;
  * @author sofia
  */
 public class Producto {
+
     private String nombre;
     private String descripcion;
+    private int ID;
+    private static int IDClase;
 
-    
-    public Producto (String nombre, String descripcion){
+    public Producto(String nombre, String descripcion) {
         this.setNombre(nombre);
         this.setDescripcion(descripcion);
-        //listaPedidos = new ListaSimple();
+        this.setID(IDClase++);
+
     }
+
+    public Producto(String nombre) {
+        this.setNombre(nombre);
+    }
+
+    @Override
+    public String toString() {
+        return "Producto: " + this.getNombre() + ", ID: " + this.getID();
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        Producto that = (Producto) o;
+        return getNombre().equals(that.getNombre());
+    }
+
     /**
      * @return the nombre
      */
@@ -45,6 +64,26 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
-    
+
+    /**
+     * @return the ID
+     */
+    public int getID() {
+        return ID;
+    }
+
+    /**
+     * @param ID the ID to set
+     */
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    /**
+     * @return the IDClase
+     */
+    public static int getIDClase() {
+        return IDClase;
+    }
+
 }
