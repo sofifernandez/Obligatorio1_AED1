@@ -7,7 +7,6 @@ public class Sistema implements IObligatorio {
 
     private ListaSimple listaClientes;
     private ListaSimple listaProductos;
-    private ListaSimple listaStockProducto;
 
     public void mostrarLista() {
         //listaClientes.mostrar();
@@ -24,7 +23,7 @@ public class Sistema implements IObligatorio {
             listaClientes = new ListaSimple(10);
             listaProductos = new ListaSimple(10);
             r.resultado = Retorno.Resultado.OK;
-        }
+         }
         return r;
     }
 
@@ -47,7 +46,7 @@ public class Sistema implements IObligatorio {
         if (listaClientes.existeElemento(new Cliente(ci))) {
             Nodo nuevo = listaClientes.obtenerElemento(new Cliente(ci));
             Cliente nuevoCli = (Cliente) nuevo.getDato();
-             if(nuevoCli.getListaPedidos().esVacia()){
+            if(nuevoCli.getListaPedidos().esVacia()){
                 listaClientes.eliminarElemento(new Cliente(ci));
                 r.resultado = Retorno.Resultado.OK;
             }
@@ -62,8 +61,7 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno agregarProducto(String nombre, String descripcion
-    ) {
+    public Retorno agregarProducto(String nombre, String descripcion) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if (listaProductos.existeElemento(new Producto(nombre))) {
             r.resultado = Retorno.Resultado.ERROR_1;
@@ -80,6 +78,10 @@ public class Sistema implements IObligatorio {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if (listaProductos.existeElemento(new Producto(nombre))) {
             //if() FALTA SI ESTA EN LISTA DE PEDIDOS, 
+           
+            
+            
+            
             listaProductos.eliminarElemento(new Producto(nombre));
             r.resultado = Retorno.Resultado.OK;
         } else {

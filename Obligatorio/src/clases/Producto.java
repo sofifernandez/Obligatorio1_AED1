@@ -1,25 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package clases;
 
-/**
- *
- * @author sofia
- */
 public class Producto {
 
     private String nombre;
     private String descripcion;
+    private int stock;
     private int ID;
-    private static int IDClase;
+    private static int IDClase = 1;
 
     public Producto(String nombre, String descripcion) {
         this.setNombre(nombre);
         this.setDescripcion(descripcion);
-        this.setID(IDClase++);
-
+        this.setStock(0);
+        ID = this.IDClase++;
     }
 
     public Producto(String nombre) {
@@ -78,7 +72,15 @@ public class Producto {
     public void setID(int ID) {
         this.ID = ID;
     }
+    
+    public int getStock() {
+        return stock;
+    }
 
+   
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
     /**
      * @return the IDClase
      */
