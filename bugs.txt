@@ -1,2 +1,12 @@
-- no funciona lo de evaluar si tiene pedidos el cliente antes de eliminar
-- no funciona el ID autoincremental de producto
+- no funciona lo de evaluar si tiene pedidos el cliente antes de eliminar (CHECK)
+- no funciona el ID autoincremental de producto (CHECK)
+
+PREGUNTAS.
+1) Abrir un nuevo pedido --> La letra dice 'El sistema generará un número de pedido en forma automática y correlativo comenzando del 1'.
+No es por cliente no? Ej, pedido 1 del cliente 1 y pedido 1 del cliente 2.
+
+2) Lista de pedidos cerrados de cliente. Nos parece más eficiente tener una cola de pedidos en cada cliente en vez de tener que recorrer toda la lista de pedidos cerrados buscando todos los de mi cliente. la desventaja es que hay información repetida. 
+
+3) En la 4.5 dice Si se listan todos los pedidos cerrados del cliente indicado, pero no tiene sentido
+
+4) la 4.6 es por cliente? no está en los parámetros de la función pero por el nombre parecería

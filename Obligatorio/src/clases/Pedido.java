@@ -8,10 +8,11 @@ class Pedido {
     private int IDPedido;
     private enum estado {ABIERTO , CERRADO , ProntoParaEntregar}
     private Cliente cli;
-    Pila pilaProductos = new Pila();
+    private Pila pilaProductos;
     
     public Pedido(){
         IDPedido = this.IDPedido++;
+        pilaProductos = new Pila();
     }
         
     }
