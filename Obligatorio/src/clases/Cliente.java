@@ -13,18 +13,37 @@ public class Cliente {
 
     private String nombre;
     private String ci;
-    private ListaSimple listaPedidos;
+    private ListaSimple listaPedidosCerrados;
+    private Pedido pedidoAbierto;
+
+    public ListaSimple getListaPedidosCerrados() {
+        return listaPedidosCerrados;
+    }
+
+    public void setListaPedidosCerrados(ListaSimple listaPedidosCerrados) {
+        this.listaPedidosCerrados = listaPedidosCerrados;
+    }
+
+    public Pedido getPedidoAbierto() {
+        return pedidoAbierto;
+    }
+
+    public void setPedidoAbierto(Pedido pedidoAbierto) {
+        this.pedidoAbierto = pedidoAbierto;
+    }
 
     public Cliente(String nombre, String ci) {
         this.setNombre(nombre);
         this.setCi(ci);
-        listaPedidos = new ListaSimple(20);
+        listaPedidosCerrados = new ListaSimple(20);
+        pedidoAbierto = new Pedido();
     }
     
     public Cliente(String ci) {
         this.setNombre("");
         this.setCi(ci);
-        listaPedidos = new ListaSimple(20);
+        listaPedidosCerrados = new ListaSimple(20);
+        pedidoAbierto = new Pedido();
     }
 
     //public boolean equals(Cliente obj) {
@@ -71,20 +90,6 @@ public class Cliente {
      */
     public void setCi(String ci) {
         this.ci = ci;
-    }
-
-    /**
-     * @return the listaPedidos
-     */
-    public ListaSimple getListaPedidos() {
-        return listaPedidos;
-    }
-
-    /**
-     * @param listaPedidos the listaPedidos to set
-     */
-    public void setListaPedidos(ListaSimple listaPedidos) {
-        this.listaPedidos = listaPedidos;
     }
 
 }

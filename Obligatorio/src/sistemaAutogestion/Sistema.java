@@ -46,7 +46,7 @@ public class Sistema implements IObligatorio {
         if (listaClientes.existeElemento(new Cliente(ci))) {
             Nodo nuevo = listaClientes.obtenerElemento(new Cliente(ci));
             Cliente nuevoCli = (Cliente) nuevo.getDato();
-            if(nuevoCli.getListaPedidos().esVacia()){
+            if(nuevoCli.getListaPedidosCerrados().esVacia() && nuevoCli.getPedidoAbierto()!= null ){
                 listaClientes.eliminarElemento(new Cliente(ci));
                 r.resultado = Retorno.Resultado.OK;
             }
@@ -73,15 +73,12 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno eliminarProducto(String nombre
-    ) {
+    public Retorno eliminarProducto(String nombre) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if (listaProductos.existeElemento(new Producto(nombre))) {
-            //if() FALTA SI ESTA EN LISTA DE PEDIDOS, 
-           
-            
-            
-            
+            //if() FALTA SI ESTA EN LISTA DE PEDIDOS, Aun no esta impleentado el alta de pedidos, Segunda parte**
+            //me gustaria hacer un for(Cliente unCli:listaClientes) y en cada cliente preguntar en la lista de pedidos o en pedidoabierto si aparece
+            //el producto que quiero eliminar
             listaProductos.eliminarElemento(new Producto(nombre));
             r.resultado = Retorno.Resultado.OK;
         } else {
