@@ -88,4 +88,8 @@ public class Producto {
         return IDClase;
     }
 
+    public int setStock() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

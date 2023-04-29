@@ -76,6 +76,7 @@ public class Sistema implements IObligatorio {
     public Retorno eliminarProducto(String nombre) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if (listaProductos.existeElemento(new Producto(nombre))) {
+            
             //if() FALTA SI ESTA EN LISTA DE PEDIDOS, Aun no esta impleentado el alta de pedidos, Segunda parte**
             //me gustaria hacer un for(Cliente unCli:listaClientes) y en cada cliente preguntar en la lista de pedidos o en pedidoabierto si aparece
             //el producto que quiero eliminar
@@ -88,9 +89,25 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno altaStockProducto(String nroProducto, int unidades
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Retorno altaStockProducto(String nroProducto, int unidades){
+        
+         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA); 
+         if(unidades > 0)
+         {
+            if(listaProductos.existeElemento(nroProducto) )
+            { 
+                Nodo nuevo = listaProductos.obtenerElemento(nroProducto);
+                Producto nuevoProd = (Producto) nuevo.getDato();
+                nuevoProd.setStock(unidades + nuevoProd.getStock() );
+            }
+            else{
+                r.resultado = Retorno.Resultado.ERROR_1;
+            }
+         }
+         else{
+             r.resultado = Retorno.Resultado.ERROR_2;
+         }
+        return r;
     }
 
     //HASTA ACÁ PRIMERA ENTREGA
