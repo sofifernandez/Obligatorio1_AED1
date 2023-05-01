@@ -23,7 +23,7 @@ public class Sistema implements IObligatorio {
             listaClientes = new ListaSimple(10);
             listaProductos = new ListaSimple(10);
             r.resultado = Retorno.Resultado.OK;
-         }
+        }
         return r;
     }
 
@@ -33,8 +33,7 @@ public class Sistema implements IObligatorio {
         if (listaClientes.existeElemento(new Cliente(nombre, ci))) {
             r.resultado = Retorno.Resultado.ERROR_1;
         } else {
-            listaClientes.agregarInicio(new Cliente(nombre, ci));
-            //System.out.println("PRUEBA");
+            listaClientes.agregarOrd(new Cliente(nombre, ci));
             r.resultado = Retorno.Resultado.OK;
         }
         return r;
@@ -46,13 +45,12 @@ public class Sistema implements IObligatorio {
         if (listaClientes.existeElemento(new Cliente(ci))) {
             Nodo nuevo = listaClientes.obtenerElemento(new Cliente(ci));
             Cliente nuevoCli = (Cliente) nuevo.getDato();
-            if(nuevoCli.getListaPedidosCerrados().esVacia() && nuevoCli.getPedidoAbierto()!= null ){
+            if (nuevoCli.getListaPedidosCerrados().esVacia() && nuevoCli.getPedidoAbierto() != null) {
                 listaClientes.eliminarElemento(new Cliente(ci));
                 r.resultado = Retorno.Resultado.OK;
-            }
-            else{
+            } else {
                 r.resultado = Retorno.Resultado.ERROR_2;
-             }
+            }
         } else {
             r.resultado = Retorno.Resultado.ERROR_1;
         }
@@ -75,13 +73,15 @@ public class Sistema implements IObligatorio {
     @Override
     public Retorno eliminarProducto(String nombre) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
-        if (listaProductos.existeElemento(new Producto(nombre))) {
-            
-            //if() FALTA SI ESTA EN LISTA DE PEDIDOS, Aun no esta impleentado el alta de pedidos, Segunda parte**
-            //me gustaria hacer un for(Cliente unCli:listaClientes) y en cada cliente preguntar en la lista de pedidos o en pedidoabierto si aparece
-            //el producto que quiero eliminar
-            listaProductos.eliminarElemento(new Producto(nombre));
-            r.resultado = Retorno.Resultado.OK;
+        Nodo nod =  listaProductos.obtenerElemento(new Producto(nombre));
+        if (nod != null) {
+            Producto prod= (Producto)nod.getDato();
+            if (prod.getPedidosProducto() > 0) {
+                r.resultado = Retorno.Resultado.ERROR_2;
+            } else {
+                listaProductos.eliminarElemento(new Producto(nombre));
+                r.resultado = Retorno.Resultado.OK;
+            }
         } else {
             r.resultado = Retorno.Resultado.ERROR_1;
         }
@@ -89,24 +89,20 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno altaStockProducto(String nroProducto, int unidades){
-        
-         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA); 
-         if(unidades > 0)
-         {
-            if(listaProductos.existeElemento(nroProducto) )
-            { 
+    public Retorno altaStockProducto(String nroProducto, int unidades) {
+
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if (unidades > 0) {
+            if (listaProductos.existeElemento(nroProducto)) {
                 Nodo nuevo = listaProductos.obtenerElemento(nroProducto);
                 Producto nuevoProd = (Producto) nuevo.getDato();
-                nuevoProd.setStock(unidades + nuevoProd.getStock() );
-            }
-            else{
+                nuevoProd.setStock(unidades + nuevoProd.getStock());
+            } else {
                 r.resultado = Retorno.Resultado.ERROR_1;
             }
-         }
-         else{
-             r.resultado = Retorno.Resultado.ERROR_2;
-         }
+        } else {
+            r.resultado = Retorno.Resultado.ERROR_2;
+        }
         return r;
     }
 

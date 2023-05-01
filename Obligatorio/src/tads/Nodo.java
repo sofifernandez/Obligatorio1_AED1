@@ -4,16 +4,16 @@ package tads;
 public class Nodo<T> {
     
     private T dato;
-    private Nodo siguiente;
+    private Nodo<T> siguiente;
     
     public Nodo(T unDato){
         this.setDato(unDato);
         this.setSiguiente(null);
     }
 
-    Nodo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    //Nodo() {
+      //  throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    //}
 
     /**
      * @return the dato

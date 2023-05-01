@@ -1,18 +1,20 @@
 
 package clases;
 
-public class Producto {
+public class Producto implements Comparable<Producto> {
 
     private String nombre;
     private String descripcion;
     private int stock;
     private int ID;
+    private int pedidosProducto;
     private static int IDClase = 1;
 
     public Producto(String nombre, String descripcion) {
         this.setNombre(nombre);
         this.setDescripcion(descripcion);
         this.setStock(0);
+        this.setPedidosProducto(0);
         ID = this.IDClase++;
     }
 
@@ -76,11 +78,22 @@ public class Producto {
     public int getStock() {
         return stock;
     }
-
    
     public void setStock(int stock) {
         this.stock = stock;
     }
+    
+    
+    //PedidosProducto
+     public int getPedidosProducto() {
+        return pedidosProducto;
+    }
+   
+    public void setPedidosProducto(int PedidosProducto) {
+        this.pedidosProducto = PedidosProducto;
+    }
+    
+    
     /**
      * @return the IDClase
      */
@@ -88,8 +101,13 @@ public class Producto {
         return IDClase;
     }
 
-    public int setStock() {
+    @Override
+    public int compareTo(Producto o) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+
+
+    
 
 }

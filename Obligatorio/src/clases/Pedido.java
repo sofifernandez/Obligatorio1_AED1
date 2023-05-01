@@ -3,7 +3,7 @@ package clases;
 
 import tads.Pila;
 
-class Pedido {
+class Pedido implements Comparable<Pedido> {
 
     public static int getID() {
         return ID;
@@ -38,6 +38,11 @@ class Pedido {
     }
     private static int ID = 1;
     private int IDPedido;
+
+    @Override
+    public int compareTo(Pedido o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     private enum estado {ABIERTO , CERRADO , ProntoParaEntregar}
     private Cliente cli;
     private Pila pilaProductos;

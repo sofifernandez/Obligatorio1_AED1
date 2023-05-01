@@ -1,8 +1,8 @@
 package tads;
 
-public class ListaSimple<T> implements ILista<T> {
+public class ListaSimple<T extends Comparable> implements ILista<T> {
 
-    private Nodo inicio;
+    private Nodo<T> inicio;
     private int cantidad;
     private int cantidadMax;
 
@@ -99,7 +99,6 @@ public class ListaSimple<T> implements ILista<T> {
 
     @Override
     public boolean existeElemento(T n) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         boolean existe = false;
         if (!esVacia()) {
             Nodo nuevo = new Nodo(n);
@@ -118,31 +117,35 @@ public class ListaSimple<T> implements ILista<T> {
 
     @Override
     public void agregarOrd(T n) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        if (verificarCantidad()) {
-//            if (esVacia() || inicio.getDato() >= n) {
-//                agregarInicio(n);
-//            } else {
-//
-//                Nodo actual = inicio;
-//
-//                while (actual.getSiguiente() != null && actual.getSiguiente().getDato() < n) {
-//                    actual = actual.getSiguiente();
-//                }
-//
-//                if (actual.getSiguiente() == null) {
-//                    agregarFinal(n);
-//                } else {
-//                    Nodo nuevo = new Nodo(n);
-//                    Nodo sig = actual.getSiguiente();
-//                    actual.setSiguiente(nuevo);
-//                    nuevo.setSiguiente(sig);
-//                    cantidad++;
-//                }
-//
-//            }
-//        }
+        if (!this.verificarCantidad()) {
+            Nodo<T> nuevo = new Nodo(n);
+            if (this.esVacia()) {
+                agregarInicio(n);
+            } else {
+                if (getInicio().getDato().compareTo(n) > 0) {
+                    agregarInicio(n);
+                } else {
+                    if (getInicio().getDato().compareTo(n) < 0) {
+                        agregarFinal(n);
+                    } else {
+                        Nodo<T> actual = getInicio();
+
+                        while (actual.getSiguiente() != null && actual.getSiguiente().getDato().compareTo(n) < 0) {
+                            actual = actual.getSiguiente();
+                        }
+
+                        nuevo.setSiguiente(actual.getSiguiente());
+                        actual.setSiguiente(nuevo);
+                        cantidad++;
+                    }
+                }
+            }
+        } else {
+            System.out.println("La lista esta llena");
+        }
+
     }
+
 
     @Override
     public int cantidadElementos() {

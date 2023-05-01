@@ -9,7 +9,7 @@ import tads.ListaSimple;
  *
  * @author sofia
  */
-public class Cliente {
+public class Cliente implements Comparable<Cliente> {
 
     private String nombre;
     private String ci;
@@ -46,12 +46,6 @@ public class Cliente {
         pedidoAbierto = new Pedido();
     }
 
-    //public boolean equals(Cliente obj) {
-       // if (obj == null) {
-          //  return false;
-       // }
-      //  return this.getCi().equals((obj).getCi());
-   // }
 
     @Override
     public boolean equals(Object o) {
@@ -62,6 +56,12 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cedula:" + this.getCi();
+    }
+    
+    @Override
+    public int compareTo(Cliente o) {
+        //return this.getTel() - o.getTel(); 
+        return this.getNombre().compareTo(o.getNombre());
     }
 
     /**
