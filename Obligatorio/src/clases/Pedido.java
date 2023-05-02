@@ -3,8 +3,19 @@ package clases;
 
 import tads.Pila;
 
-class Pedido implements Comparable<Pedido> {
-
+class Pedido{
+    
+    private static int ID = 1;
+    private int IDPedido;
+    private enum estado {ABIERTO , CERRADO , ProntoParaEntregar}
+    private Cliente cli;
+    private Pila pilaProductos;
+    
+    public Pedido(){
+        IDPedido = this.IDPedido++;
+        pilaProductos = new Pila();
+    }
+    
     public static int getID() {
         return ID;
     }
@@ -36,21 +47,9 @@ class Pedido implements Comparable<Pedido> {
     public void setPilaProductos(Pila pilaProductos) {
         this.pilaProductos = pilaProductos;
     }
-    private static int ID = 1;
-    private int IDPedido;
-
-    @Override
-    public int compareTo(Pedido o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    private enum estado {ABIERTO , CERRADO , ProntoParaEntregar}
-    private Cliente cli;
-    private Pila pilaProductos;
     
-    public Pedido(){
-        IDPedido = this.IDPedido++;
-        pilaProductos = new Pila();
-    }
+    
+    
         
     }
 

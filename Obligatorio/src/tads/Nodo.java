@@ -32,7 +32,7 @@ public class Nodo<T> {
     /**
      * @return the siguiente
      */
-    public Nodo getSiguiente() {
+    public Nodo<T> getSiguiente() {
         return siguiente;
     }
 

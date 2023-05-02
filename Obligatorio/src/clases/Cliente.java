@@ -15,7 +15,31 @@ public class Cliente implements Comparable<Cliente> {
     private String ci;
     private ListaSimple listaPedidosCerrados;
     private Pedido pedidoAbierto;
+    private String pedidoAbiertoString;
 
+     public Cliente(String nombre, String ci) {
+        this.setNombre(nombre);
+        this.setCi(ci);
+        listaPedidosCerrados = new ListaSimple(20);
+        pedidoAbierto = new Pedido();
+        
+    }
+    
+    public Cliente(String ci) {
+        this.setNombre("");
+        this.setCi(ci);
+        listaPedidosCerrados = new ListaSimple(20);
+        pedidoAbierto = new Pedido();
+    }
+    
+    public String getPedidoAbiertoString() {
+        return pedidoAbiertoString;
+    }
+
+    public void setPedidoAbiertoString(String pedidoAbiertoString) {
+        this.pedidoAbiertoString = pedidoAbiertoString;
+    }
+    
     public ListaSimple getListaPedidosCerrados() {
         return listaPedidosCerrados;
     }
@@ -32,19 +56,7 @@ public class Cliente implements Comparable<Cliente> {
         this.pedidoAbierto = pedidoAbierto;
     }
 
-    public Cliente(String nombre, String ci) {
-        this.setNombre(nombre);
-        this.setCi(ci);
-        listaPedidosCerrados = new ListaSimple(20);
-        pedidoAbierto = new Pedido();
-    }
-    
-    public Cliente(String ci) {
-        this.setNombre("");
-        this.setCi(ci);
-        listaPedidosCerrados = new ListaSimple(20);
-        pedidoAbierto = new Pedido();
-    }
+
 
 
     @Override
@@ -55,7 +67,7 @@ public class Cliente implements Comparable<Cliente> {
     
     @Override
     public String toString() {
-        return "Cedula:" + this.getCi();
+        return "Cedula: " + this.getCi() + " Nombre: " + this.getNombre();
     }
     
     @Override

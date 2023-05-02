@@ -105,9 +105,6 @@ public class Producto implements Comparable<Producto> {
     public int compareTo(Producto o) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-
-
     
 
 }

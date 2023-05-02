@@ -117,7 +117,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
 
     @Override
     public void agregarOrd(T n) {
-        if (!this.verificarCantidad()) {
+        if (this.verificarCantidad()) {
             Nodo<T> nuevo = new Nodo(n);
             if (this.esVacia()) {
                 agregarInicio(n);
@@ -125,9 +125,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
                 if (getInicio().getDato().compareTo(n) > 0) {
                     agregarInicio(n);
                 } else {
-                    if (getInicio().getDato().compareTo(n) < 0) {
-                        agregarFinal(n);
-                    } else {
+                    
                         Nodo<T> actual = getInicio();
 
                         while (actual.getSiguiente() != null && actual.getSiguiente().getDato().compareTo(n) < 0) {
@@ -140,7 +138,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
                     }
                 }
             }
-        } else {
+        else{
             System.out.println("La lista esta llena");
         }
 
@@ -172,12 +170,18 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
         if (!esVacia()) {
             Nodo aux = inicio;
             Nodo nuevo = new Nodo(n);
-            while(aux.getSiguiente() != null && !aux.getSiguiente().getDato().equals(nuevo.getDato())){
-                aux=aux.getSiguiente();
+            
+            if(inicio.getDato().equals(nuevo.getDato())){
+                borrarInicio();
             }
-            if(aux.getSiguiente()!=null && aux.getSiguiente().getDato().equals(nuevo.getDato())){
-                aux.setSiguiente(aux.getSiguiente().getSiguiente());
-                cantidad--;
+            else{
+                while(aux.getSiguiente() != null && !aux.getSiguiente().getDato().equals(nuevo.getDato())){
+                    aux=aux.getSiguiente();
+                }
+                if(aux.getSiguiente()!=null && aux.getSiguiente().getDato().equals(nuevo.getDato())){
+                    aux.setSiguiente(aux.getSiguiente().getSiguiente());
+                    cantidad--;
+                }
             }
         }
     }
@@ -189,7 +193,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
         /**
      * @return the inicio
      */
-    public Nodo getInicio() {
+    public Nodo<T> getInicio() {
         return inicio;
     }
 

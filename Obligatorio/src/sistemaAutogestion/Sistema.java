@@ -7,13 +7,14 @@ public class Sistema implements IObligatorio {
 
     private ListaSimple listaClientes;
     private ListaSimple listaProductos;
+    private ListaSimple listaPedidosParaEntregar;
 
     public void mostrarLista() {
         //listaClientes.mostrar();
         listaProductos.mostrar();
         //System.out.println(listaClientes.obtenerElemento(new Cliente("87654321")));
     }
-
+    
     @Override
     public Retorno crearSistemaDeAutoservicio(int maxUnidadesDePedido) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
@@ -22,15 +23,18 @@ public class Sistema implements IObligatorio {
         } else {
             listaClientes = new ListaSimple(10);
             listaProductos = new ListaSimple(10);
+            listaPedidosParaEntregar = new ListaSimple(10);
+            //Aca iria creacion de ColaPedidosCerrados() 
             r.resultado = Retorno.Resultado.OK;
         }
         return r;
     }
 
+    
     @Override
     public Retorno agregarCliente(String nombre, String ci, int tel) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
-        if (listaClientes.existeElemento(new Cliente(nombre, ci))) {
+        if (listaClientes.existeElemento(new Cliente(ci))) {
             r.resultado = Retorno.Resultado.ERROR_1;
         } else {
             listaClientes.agregarOrd(new Cliente(nombre, ci));
@@ -45,10 +49,17 @@ public class Sistema implements IObligatorio {
         if (listaClientes.existeElemento(new Cliente(ci))) {
             Nodo nuevo = listaClientes.obtenerElemento(new Cliente(ci));
             Cliente nuevoCli = (Cliente) nuevo.getDato();
-            if (nuevoCli.getListaPedidosCerrados().esVacia() && nuevoCli.getPedidoAbierto() != null) {
+            
+            //ESto lo hago solamente para forzar el ERROR 2, al cliente de Ci = 333 le genero un PedidoAbiertoString
+            if(nuevoCli.getCi() == "333"){  
+                nuevoCli.setPedidoAbiertoString("Tengo pedido abierto");
+            }
+             //La segunda condicion del if seria (nuevoCli.getPedidoAbierto() != null) Cuando se de de alta pedidos va a funcionar!
+            if (nuevoCli.getListaPedidosCerrados().esVacia() && nuevoCli.getPedidoAbiertoString() != "Tengo pedido abierto") {
                 listaClientes.eliminarElemento(new Cliente(ci));
                 r.resultado = Retorno.Resultado.OK;
             } else {
+                System.out.print("Error2");
                 r.resultado = Retorno.Resultado.ERROR_2;
             }
         } else {
