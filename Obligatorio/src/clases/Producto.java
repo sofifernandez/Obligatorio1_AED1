@@ -21,6 +21,7 @@ public class Producto implements Comparable<Producto> {
     public Producto(String nombre) {
         this.setNombre(nombre);
     }
+    
 
     @Override
     public String toString() {

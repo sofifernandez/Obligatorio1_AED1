@@ -1,3 +1,7 @@
+
+
+//*********NO IMPLEMENTADO PARA ESTA ENTREGA*******************************
+
 package tads;
 
 public interface IPila<T> {

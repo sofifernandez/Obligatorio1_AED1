@@ -15,6 +15,7 @@ public class Cliente implements Comparable<Cliente> {
     private String ci;
     private ListaSimple listaPedidosCerrados;
     private Pedido pedidoAbierto;
+    //Este atributo es para forzar el ERROR2 de eliminarCliente
     private String pedidoAbiertoString;
 
      public Cliente(String nombre, String ci) {

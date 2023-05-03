@@ -5,15 +5,11 @@ import clases.*;
 
 public class Sistema implements IObligatorio {
 
-    private ListaSimple listaClientes;
-    private ListaSimple listaProductos;
-    private ListaSimple listaPedidosParaEntregar;
-
-    public void mostrarLista() {
-        //listaClientes.mostrar();
-        listaProductos.mostrar();
-        //System.out.println(listaClientes.obtenerElemento(new Cliente("87654321")));
-    }
+    public ListaSimple listaClientes;
+    public ListaSimple listaProductos;
+    public ListaSimple listaPedidosParaEntregar;
+    //public Cola ColaPedidosCerrados;
+   
     
     @Override
     public Retorno crearSistemaDeAutoservicio(int maxUnidadesDePedido) {
@@ -50,11 +46,11 @@ public class Sistema implements IObligatorio {
             Nodo nuevo = listaClientes.obtenerElemento(new Cliente(ci));
             Cliente nuevoCli = (Cliente) nuevo.getDato();
             
-            //ESto lo hago solamente para forzar el ERROR 2, al cliente de Ci = 333 le genero un PedidoAbiertoString
+            //Esto lo hacemos solamente para forzar el ERROR 2, al cliente de Ci = 333 le asignamos un PedidoAbiertoString
             if(nuevoCli.getCi() == "333"){  
                 nuevoCli.setPedidoAbiertoString("Tengo pedido abierto");
             }
-             //La segunda condicion del if seria (nuevoCli.getPedidoAbierto() != null) Cuando se de de alta pedidos va a funcionar!
+             //La segunda condicion de este if sería: nuevoCli.getPedidoAbierto() != null.--> Cuando se de de alta pedidos va a funcionar!
             if (nuevoCli.getListaPedidosCerrados().esVacia() && nuevoCli.getPedidoAbiertoString() != "Tengo pedido abierto") {
                 listaClientes.eliminarElemento(new Cliente(ci));
                 r.resultado = Retorno.Resultado.OK;
@@ -80,6 +76,7 @@ public class Sistema implements IObligatorio {
         }
         return r;
     }
+   
 
     @Override
     public Retorno eliminarProducto(String nombre) {
@@ -87,6 +84,10 @@ public class Sistema implements IObligatorio {
         Nodo nod =  listaProductos.obtenerElemento(new Producto(nombre));
         if (nod != null) {
             Producto prod= (Producto)nod.getDato();
+            //Esto que sigue es para probar el error_2:
+            if(prod.getNombre()=="Producto1"){
+                prod.setPedidosProducto(2);
+            }
             if (prod.getPedidosProducto() > 0) {
                 r.resultado = Retorno.Resultado.ERROR_2;
             } else {
@@ -178,5 +179,6 @@ public class Sistema implements IObligatorio {
     public Retorno reporteDePedidosSolicitadosXCliente() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 
 }
