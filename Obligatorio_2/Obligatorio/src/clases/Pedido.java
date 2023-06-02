@@ -3,26 +3,21 @@ package clases;
 
 import tads.Pila;
 
-class Pedido{
+public class Pedido{
     
-    private static int ID = 1;
+    private static int IDClase = 1;
     private int IDPedido;
-    private enum estado {ABIERTO , CERRADO , ProntoParaEntregar}
+    private enum estado {ABIERTO , CERRADO , ProntoParaEntregar} //ES NECESARIO ESTO? O LO VAMOS MOVIENDO DE LISTA EN LISTA?
     private Cliente cli;
-    private Pila pilaProductos;
+    private Pila pilaProductos; //class: ProductoCantidad
+    private int unidadesTotales;
     
     public Pedido(){
-        IDPedido = this.IDPedido++;
+        IDPedido = this.IDClase++;
         pilaProductos = new Pila();
+        unidadesTotales=0;
     }
     
-    public static int getID() {
-        return ID;
-    }
-
-    public static void setID(int ID) {
-        Pedido.ID = ID;
-    }
 
     public int getIDPedido() {
         return IDPedido;
@@ -48,6 +43,13 @@ class Pedido{
         this.pilaProductos = pilaProductos;
     }
     
+     public void setUnidadesTotales(int unidades) {
+        this.unidadesTotales = this.unidadesTotales+unidades;
+    }
+    
+     public int getUnidadesTotales(){
+         return unidadesTotales;
+    }
     
     
         

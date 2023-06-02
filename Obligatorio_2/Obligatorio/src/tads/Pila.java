@@ -1,13 +1,6 @@
 
-
-
-//*********NO IMPLEMENTADO PARA ESTA ENTREGA*******************************
 package tads;
 
-/**
- *
- * @author lucas
- */
 public class Pila<T> implements IPila<T> {
     
     private Nodo tope;

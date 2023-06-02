@@ -3,12 +3,6 @@ package clases;
 
 import tads.ListaSimple;
 
-
-
-/**
- *
- * @author sofia
- */
 public class Cliente implements Comparable<Cliente> {
 
     private String nombre;
@@ -16,30 +10,23 @@ public class Cliente implements Comparable<Cliente> {
     private ListaSimple listaPedidosCerrados;
     private Pedido pedidoAbierto;
     //Este atributo es para forzar el ERROR2 de eliminarCliente
-    private String pedidoAbiertoString;
+    //private String pedidoAbiertoString;
 
      public Cliente(String nombre, String ci) {
         this.setNombre(nombre);
         this.setCi(ci);
-        listaPedidosCerrados = new ListaSimple(20);
-        pedidoAbierto = new Pedido();
+        listaPedidosCerrados = null;
+        pedidoAbierto = null;
         
     }
     
     public Cliente(String ci) {
         this.setNombre("");
         this.setCi(ci);
-        listaPedidosCerrados = new ListaSimple(20);
-        pedidoAbierto = new Pedido();
+        listaPedidosCerrados = null;
+        pedidoAbierto = null;
     }
     
-    public String getPedidoAbiertoString() {
-        return pedidoAbiertoString;
-    }
-
-    public void setPedidoAbiertoString(String pedidoAbiertoString) {
-        this.pedidoAbiertoString = pedidoAbiertoString;
-    }
     
     public ListaSimple getListaPedidosCerrados() {
         return listaPedidosCerrados;

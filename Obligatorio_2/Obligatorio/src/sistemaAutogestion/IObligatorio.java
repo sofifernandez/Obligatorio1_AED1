@@ -55,7 +55,7 @@ public interface IObligatorio {
     Si nroProducto no pertenece a ningun producto se devuelve ERROR_1.
     Si nroProducto pertenece a un producto y unidades <= 0 se devuelve ERROR_2.
     */
-    public Retorno altaStockProducto(String nroProducto, int unidades);
+    public Retorno altaStockProducto(int nroProducto, int unidades);
     
      /*
     **************** GESTIÓN DE PEDIDOS **************************************

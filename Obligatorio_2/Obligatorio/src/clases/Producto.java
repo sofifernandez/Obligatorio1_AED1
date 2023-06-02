@@ -22,6 +22,10 @@ public class Producto implements Comparable<Producto> {
         this.setNombre(nombre);
     }
     
+    public Producto(int ID) {
+        this.setID(ID);
+    }
+    
 
     @Override
     public String toString() {
@@ -65,6 +69,8 @@ public class Producto implements Comparable<Producto> {
     /**
      * @return the ID
      */
+
+    
     public int getID() {
         return ID;
     }
