@@ -3,10 +3,11 @@ package clases;
 
 import tads.Pila;
 
-public class Pedido{
+public class Pedido implements Comparable<Pedido>{
     
     private static int IDClase = 1;
     private int IDPedido;
+
     private enum estado {ABIERTO , CERRADO , ProntoParaEntregar} //ES NECESARIO ESTO? O LO VAMOS MOVIENDO DE LISTA EN LISTA?
     private Cliente cli;
     private Pila pilaProductos; //class: ProductoCantidad
@@ -51,7 +52,16 @@ public class Pedido{
          return unidadesTotales;
     }
     
+    @Override
+    public boolean equals(Object o) {
+        Pedido that = (Pedido) o;
+        return getIDPedido() == that.getIDPedido();
+    }
     
+    @Override
+    public int compareTo(Pedido o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
         
     }
 

@@ -9,7 +9,7 @@ public interface IPila<T> {
     //post: agrega en el ultimo lugar disponible de la lista
     public void push(T n);
     
-    public void pop(T n);
+    public void pop();
     
     public Nodo verTope();
     

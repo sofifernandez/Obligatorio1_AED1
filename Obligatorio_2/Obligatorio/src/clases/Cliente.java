@@ -15,7 +15,7 @@ public class Cliente implements Comparable<Cliente> {
      public Cliente(String nombre, String ci) {
         this.setNombre(nombre);
         this.setCi(ci);
-        listaPedidosCerrados = null;
+        listaPedidosCerrados = new ListaSimple(20);
         pedidoAbierto = null;
         
     }

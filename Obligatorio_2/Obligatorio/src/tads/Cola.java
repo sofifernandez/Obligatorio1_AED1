@@ -5,26 +5,28 @@ public class Cola<T> implements ICola<T> {
 
     private Nodo<T> primero;
     private Nodo<T> ultimo;
+    private int cantidad;
     
     public Cola() {
         this.primero = null;
         this.ultimo = null;
+        cantidad=0;
     }
     
     @Override
     public boolean estaVacia() {
-        return primero == null;
+        return getPrimero() == null;
     }
 
     @Override
     public void encolar(T dato) {
         Nodo<T> nuevoNodo = new Nodo<>(dato);
         if (estaVacia()) {
-            primero = nuevoNodo;
+            setPrimero(nuevoNodo);
         } else {
-            ultimo.setSiguiente(nuevoNodo);
+            getUltimo().setSiguiente(nuevoNodo);
         }
-        ultimo = nuevoNodo;
+        setUltimo(nuevoNodo);
     }
 
     @Override
@@ -32,10 +34,10 @@ public class Cola<T> implements ICola<T> {
         if (estaVacia()) {
             throw new IllegalStateException("La cola está vacía");
         }
-        T dato = primero.getDato();
-        primero = primero.getSiguiente();
-        if (primero == null) {
-            ultimo = null;
+        T dato = getPrimero().getDato();
+        setPrimero(getPrimero().getSiguiente());
+        if (getPrimero() == null) {
+            setUltimo(null);
         }
         return dato;
     }
@@ -45,13 +47,13 @@ public class Cola<T> implements ICola<T> {
         if (estaVacia()) {
             throw new IllegalStateException("La cola está vacía");
         }
-        return primero.getDato();
+        return getPrimero().getDato();
     }
 
     @Override
     public void mostrarCola() {
         
-        Nodo<T> aux = primero;
+        Nodo<T> aux = getPrimero();
         
         System.out.println("Muestro Cola:");
         
@@ -59,6 +61,48 @@ public class Cola<T> implements ICola<T> {
             System.out.print(aux.getDato() + " - ");
             aux = aux.getSiguiente();
         }  
+    }
+
+    /**
+     * @return the primero
+     */
+    public Nodo<T> getPrimero() {
+        return primero;
+    }
+
+    /**
+     * @param primero the primero to set
+     */
+    public void setPrimero(Nodo<T> primero) {
+        this.primero = primero;
+    }
+
+    /**
+     * @return the ultimo
+     */
+    public Nodo<T> getUltimo() {
+        return ultimo;
+    }
+
+    /**
+     * @param ultimo the ultimo to set
+     */
+    public void setUltimo(Nodo<T> ultimo) {
+        this.ultimo = ultimo;
+    }
+
+    /**
+     * @return the cantidad
+     */
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    /**
+     * @param cantidad the cantidad to set
+     */
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
     
 }

@@ -219,24 +219,70 @@ public class Sistema implements IObligatorio {
             return r;
         }
         
-        if(cantAccionesDeshacer>cliente.getPedidoAbierto().getPilaProductos().length())
+        if(cantAccionesDeshacer > cliente.getPedidoAbierto().getPilaProductos().getCantidad())
         {
-        //--------------
+            r.resultado = Retorno.Resultado.ERROR_3; //Las acciones son 0 o menores
+            return r;
         }
         
+        
+        int contador=0;
+        while(contador<=cantAccionesDeshacer)
+            {
+                cliente.getPedidoAbierto().getPilaProductos().pop();
+                contador++;
+            }
+            if(cliente.getPedidoAbierto().getPilaProductos().esVacia())
+            {
+                cliente.setPedidoAbierto(null);
+            }
+
         return r;
     }
 
     @Override
-    public Retorno cerrarPedido(String ciCliente
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Retorno cerrarPedido(String ciCliente) {
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Cliente cliente= getCliente(ciCliente);
+        if(cliente==null)
+        {
+            r.resultado = Retorno.Resultado.ERROR_1; //El cliente no existe
+            return r;
+        }
+        
+        if(cliente.getPedidoAbierto()==null){
+            r.resultado = Retorno.Resultado.ERROR_1; //El cliente no tiene un pedido abierto
+            return r;
+        }
+        
+        cliente.getListaPedidosCerrados().agregarInicio(cliente.getPedidoAbierto());
+        cliente.setPedidoAbierto(null);
+        return r;
     }
 
     @Override
-    public Retorno procesarPedido(int cantPedidos
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Retorno procesarPedido(int cantPedidos) {
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if(cantPedidos<=0){
+            r.resultado = Retorno.Resultado.ERROR_1; //Las acciones son 0 o menores
+            return r;
+        }
+        
+        if(colaPedidosCerrados.getCantidad()>cantPedidos){
+            r.resultado = Retorno.Resultado.ERROR_2; //r.resultado = Retorno.Resultado.ERROR_1; //Las acciones son 0 o menores
+            return r;
+        }
+        
+        int contador=0;
+        while (contador<=cantPedidos)
+        {
+           
+            listaPedidosParaEntregar.agregarFinal(colaPedidosCerrados.getPrimero());
+            colaPedidosCerrados.desencolar();
+            contador++;
+        }
+        return r;
+        
     }
 
     @Override

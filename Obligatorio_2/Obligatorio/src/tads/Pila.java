@@ -7,41 +7,41 @@ public class Pila<T> implements IPila<T> {
     private int cantidad;
     
     public void Pila(){
-        this.tope = null;
-        cantidad = 0;
+        this.setTope(null);
+        setCantidad(0);
     }
     
     @Override
     public boolean esVacia(){
-        return tope == null;
+        return getTope() == null;
     }
     
     @Override
     public void push(T n) {
         Nodo nuevo = new Nodo(n);
         if(esVacia()){
-            tope = nuevo;
+            setTope(nuevo);
         }
         else{
-            nuevo.setSiguiente(tope);
-            tope = nuevo;
+            nuevo.setSiguiente(getTope());
+            setTope(nuevo);
         }
-        cantidad++; 
+        setCantidad(getCantidad() + 1); 
         
     }
 
     @Override
-    public void pop(T n) {
+    public void pop() {
         if(!esVacia()){
-            tope = tope.getSiguiente();
-            cantidad--;
+            setTope(getTope().getSiguiente());
+            setCantidad(getCantidad() - 1);
         }
     }
 
     @Override
     public Nodo verTope() {
         if(!esVacia()){
-            return tope;
+            return getTope();
         }
         else{
           return null;
@@ -50,7 +50,7 @@ public class Pila<T> implements IPila<T> {
 
     @Override
     public boolean buscarElemento(T n) {
-        Nodo aux = tope;
+        Nodo aux = getTope();
         boolean existe = false;
         
         while(existe != true && aux!=null){
@@ -66,17 +66,45 @@ public class Pila<T> implements IPila<T> {
 
     @Override
     public void vaciar() {
-        tope = null;
-        cantidad = 0;
+        setTope(null);
+        setCantidad(0);
     }
 
     @Override
     public void mostrar() {
-        Nodo aux = tope;
+        Nodo aux = getTope();
         while(aux != null){
             System.out.println(aux.getDato() + "-");
             aux = aux.getSiguiente();
         }
+    }
+
+    /**
+     * @return the tope
+     */
+    public Nodo getTope() {
+        return tope;
+    }
+
+    /**
+     * @param tope the tope to set
+     */
+    public void setTope(Nodo tope) {
+        this.tope = tope;
+    }
+
+    /**
+     * @return the cantidad
+     */
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    /**
+     * @param cantidad the cantidad to set
+     */
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }
         
