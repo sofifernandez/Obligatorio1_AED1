@@ -144,7 +144,7 @@ public interface IObligatorio {
     POST: si ci pertenece a un cliente de la lista, se muestran su listaPedidosCerrados.
     Si ci no se encuentra en la lista de clientes, se devuelve ERROR_1. 
     */
-    public Retorno pedidosCerradosDeClientes(int ci);
+    public Retorno pedidosCerradosDeClientes(String ci);
     
     
     /*

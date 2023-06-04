@@ -1,7 +1,7 @@
 
 package tads;
 
-public class Cola<T> implements ICola<T> {
+public class Cola<T extends Comparable> implements ICola<T> {
 
     private Nodo<T> primero;
     private Nodo<T> ultimo;

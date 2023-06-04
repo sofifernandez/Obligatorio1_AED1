@@ -132,6 +132,7 @@ public class Sistema implements IObligatorio {
         } else {
             r.resultado = Retorno.Resultado.ERROR_2; //Las unidades ingresadas son menores o iguales a 0
         }
+        r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
@@ -155,7 +156,7 @@ public class Sistema implements IObligatorio {
                 cliente.setPedidoAbierto(new Pedido());
         }
         
-        
+        r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
@@ -199,6 +200,7 @@ public class Sistema implements IObligatorio {
         ProductoCantidad prodCant=new ProductoCantidad(producto.getNombre(), producto.getID(), unidades);
         cliente.getPedidoAbierto().getPilaProductos().push(prodCant);
         cliente.getPedidoAbierto().setUnidadesTotales(unidades);
+        r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
@@ -225,7 +227,6 @@ public class Sistema implements IObligatorio {
             return r;
         }
         
-        
         int contador=0;
         while(contador<=cantAccionesDeshacer)
             {
@@ -236,7 +237,7 @@ public class Sistema implements IObligatorio {
             {
                 cliente.setPedidoAbierto(null);
             }
-
+        r.resultado = Retorno.Resultado.OK;    
         return r;
     }
 
@@ -257,6 +258,7 @@ public class Sistema implements IObligatorio {
         
         cliente.getListaPedidosCerrados().agregarInicio(cliente.getPedidoAbierto());
         cliente.setPedidoAbierto(null);
+        r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
@@ -268,8 +270,8 @@ public class Sistema implements IObligatorio {
             return r;
         }
         
-        if(colaPedidosCerrados.getCantidad()>cantPedidos){
-            r.resultado = Retorno.Resultado.ERROR_2; //r.resultado = Retorno.Resultado.ERROR_1; //Las acciones son 0 o menores
+        if(colaPedidosCerrados.getCantidad()<cantPedidos){
+            r.resultado = Retorno.Resultado.ERROR_2; //Cantidad de pedidos a procesar es mayor a la cantidad de pedidos cerrados
             return r;
         }
         
@@ -281,29 +283,57 @@ public class Sistema implements IObligatorio {
             colaPedidosCerrados.desencolar();
             contador++;
         }
+        r.resultado = Retorno.Resultado.OK;
         return r;
         
     }
 
     @Override
     public Retorno listarClientes() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        listaClientes.mostrar();
+        r.resultado = Retorno.Resultado.OK;
+        return r;
     }
 
     @Override
     public Retorno listarProductos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        listaProductos.mostrar();
+        r.resultado = Retorno.Resultado.OK;
+        return r;
     }
 
     @Override
     public Retorno listarPedidosAbiertos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Nodo aux = listaClientes.getInicio();
+
+        if (!listaClientes.esVacia()) {
+            while (aux != null) {
+                Cliente cliente = (Cliente) aux.getDato();
+                if(cliente.getListaPedidosCerrados()!=null){
+                    System.out.println("---------------------------------");
+                    System.out.println(cliente.toString());
+                    //Como mostramos una pila??? Qué información de los pedidos habría que mostrar??
+                    System.out.println(cliente.getPedidoAbierto().getPilaProductos().getCantidad()); 
+                }
+                aux = aux.getSiguiente();
+            }
+        } else {
+            System.out.println("N hay clientes en la lista");
+        }
+        return r;
     }
 
     @Override
-    public Retorno pedidosCerradosDeClientes(int ci
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Retorno pedidosCerradosDeClientes(String ci) {
+        Retorno r = new Retorno(Retorno.Resultado.OK);
+        Cliente cliente= getCliente(ci);
+        cliente.getListaPedidosCerrados().mostrar();
+        return r;
     }
 
     @Override
