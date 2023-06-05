@@ -62,7 +62,11 @@ public class Pedido implements Comparable<Pedido>{
     public int compareTo(Pedido o) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-        
+    
+    public int cantProducto(int IDProd){ //devuelve la cantidad de unidades del producto tal
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+        
+}
 
  

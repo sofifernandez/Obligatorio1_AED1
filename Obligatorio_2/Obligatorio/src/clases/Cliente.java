@@ -1,6 +1,6 @@
 
 package clases;
-
+import tads.Nodo;
 import tads.ListaSimple;
 
 public class Cliente implements Comparable<Cliente> {
@@ -44,8 +44,16 @@ public class Cliente implements Comparable<Cliente> {
         this.pedidoAbierto = pedidoAbierto;
     }
 
-
-
+    public int unidadesTotalesProducto(int IDProducto){
+         Nodo auxPedidos = listaPedidosCerrados.getInicio();
+         int unidadesTot=0;
+         while(auxPedidos!=null){ //recorrer la lista de pedidosCerrados 
+             Pedido pedido = (Pedido) auxPedidos.getDato();
+             unidadesTot=unidadesTot+pedido.cantProducto(IDProducto); //sumarle las unidades de ese producto, si no está devuelve un 0
+             auxPedidos=auxPedidos.getSiguiente();
+         }
+         return unidadesTot;
+    }
 
     @Override
     public boolean equals(Object o) {

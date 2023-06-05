@@ -31,5 +31,7 @@ public interface ILista<T> {
     public Nodo obtenerElemento(T n);
     
     public void eliminarElemento(T n);
+    
+    public void mostrarRec();
 
 }
