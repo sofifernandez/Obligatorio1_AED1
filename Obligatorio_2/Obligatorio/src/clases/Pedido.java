@@ -45,11 +45,20 @@ public class Pedido implements Comparable<Pedido>{
     }
     
      public void setUnidadesTotales(int unidades) {
-        this.unidadesTotales = this.unidadesTotales+unidades;
+        this.unidadesTotales = unidades;
     }
     
      public int getUnidadesTotales(){
          return unidadesTotales;
+    }
+     
+    public void actualizarUnidades(int unidades, String tipo){
+        if(tipo=="ELIMINAR"){
+            this.setUnidadesTotales(this.getUnidadesTotales()-unidades);
+        }
+        if(tipo=="AGREGAR"){
+            this.setUnidadesTotales(this.getUnidadesTotales()+unidades);
+        }
     }
     
     @Override

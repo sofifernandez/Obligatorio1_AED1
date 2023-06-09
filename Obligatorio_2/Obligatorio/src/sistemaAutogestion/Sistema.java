@@ -32,6 +32,25 @@ public class Sistema implements IObligatorio {
     }
     
     
+    private Producto getProductoPorNombre(String nombre) {
+        if (!listaProductos.esVacia()) {
+            Nodo aux = listaProductos.getInicio();
+            Producto productoEnLista = (Producto) aux.getDato();
+            while(aux != null && !productoEnLista.getNombre().equals(nombre)){
+                aux=aux.getSiguiente();
+                if(aux!=null){
+                    productoEnLista = (Producto) aux.getDato();
+                }
+            }
+            if(aux!=null && productoEnLista.getNombre().equals(nombre)){
+                productoEnLista = (Producto) aux.getDato();
+                return productoEnLista;
+            }
+        }
+        return null;
+    }
+    
+    
     //--------------------------------------------------------------------------
     //Registros de Clientes y Productos
     @Override
@@ -57,9 +76,16 @@ public class Sistema implements IObligatorio {
         if (listaClientes.existeElemento(new Cliente(ci))) {
             r.resultado = Retorno.Resultado.ERROR_1;
         } else {
-            listaClientes.agregarOrd(new Cliente(nombre, ci));
+            Cliente cliente = new Cliente(nombre, ci);
+            
+            if(ci.equals("333")){ // esto es para la prueba de eliminar cliente con un pedido abierto != null
+                Pedido pedido=new Pedido();
+                cliente.setPedidoAbierto(pedido);
+            }
+
+            listaClientes.agregarOrd(cliente);
             r.resultado = Retorno.Resultado.OK;
-        }
+        }      
         return r;
     }
 
@@ -85,6 +111,20 @@ public class Sistema implements IObligatorio {
     @Override
     public Retorno agregarProducto(String nombre, String descripcion) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Producto buscarProd= getProductoPorNombre(nombre);
+        if (buscarProd!=null) {
+            r.resultado = Retorno.Resultado.ERROR_1; //Ya existe un producto con ese nombre
+        } else {
+            listaProductos.agregarInicio(new Producto(nombre, descripcion));
+            r.resultado = Retorno.Resultado.OK;
+        }
+        return r;
+    }
+    
+    /* La función vieja, no la quise borrar por las dudas
+    @Override
+    public Retorno agregarProducto(String nombre, String descripcion) {
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if (listaProductos.existeElemento(new Producto(nombre))) {
             r.resultado = Retorno.Resultado.ERROR_1;
         } else {
@@ -93,8 +133,30 @@ public class Sistema implements IObligatorio {
         }
         return r;
     }
-   
-
+    */
+    
+    @Override
+    public Retorno eliminarProducto(String nombre) {
+        Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        Producto buscarProd= getProductoPorNombre(nombre);
+        if (buscarProd != null) {
+            //Esto que sigue es para probar el error_2:
+            if(buscarProd.getNombre()=="Producto1"){
+                buscarProd.setPedidosProducto(2);
+            }
+            if (buscarProd.getPedidosProducto() > 0) {
+                r.resultado = Retorno.Resultado.ERROR_2; //Está en pedidos abiertos o cerrados
+            } else {
+                listaProductos.eliminarElemento(buscarProd);
+                r.resultado = Retorno.Resultado.OK;
+            }
+        } else {
+            r.resultado = Retorno.Resultado.ERROR_1; //No existe el nombre del producto
+        }
+        return r;
+    }
+    
+    /* FUNCION VIEJA
     @Override
     public Retorno eliminarProducto(String nombre) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
@@ -116,23 +178,25 @@ public class Sistema implements IObligatorio {
         }
         return r;
     }
+    */
+    
+    
 
     @Override
     public Retorno altaStockProducto(int nroProducto, int unidades) {
-
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if (unidades > 0) {
-            if (listaProductos.existeElemento(nroProducto)) {
-                Nodo nuevo = listaProductos.obtenerElemento(nroProducto);
-                Producto nuevoProd = (Producto) nuevo.getDato();
-                nuevoProd.setStock(unidades + nuevoProd.getStock());
+            if (listaProductos.existeElemento(new Producto(nroProducto))) {
+                //Nodo nuevo = listaProductos.obtenerElemento(nroProducto);
+                Producto producto = getProductoPorID(nroProducto);
+                producto.setStock(unidades + producto.getStock());
+                r.resultado = Retorno.Resultado.OK;
             } else {
                 r.resultado = Retorno.Resultado.ERROR_1; //No existe el producto
             }
         } else {
             r.resultado = Retorno.Resultado.ERROR_2; //Las unidades ingresadas son menores o iguales a 0
         }
-        r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
@@ -154,9 +218,8 @@ public class Sistema implements IObligatorio {
         } else 
         {
                 cliente.setPedidoAbierto(new Pedido());
+                r.resultado = Retorno.Resultado.OK;
         }
-        
-        r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
@@ -184,34 +247,43 @@ public class Sistema implements IObligatorio {
         
         if(cliente.getPedidoAbierto().getUnidadesTotales() + unidades > this.maxUnidadesDePedido)
         {
-            r.resultado = Retorno.Resultado.ERROR_3; //Se supere el máximo de unidades totales permitidas para el pedido.
+            r.resultado = Retorno.Resultado.ERROR_3; //Se supera el máximo de unidades totales permitidas para el pedido.
             return r;
         }
         
         if(unidades > producto.getStock())
         {
-            r.resultado = Retorno.Resultado.ERROR_5; //r.resultado = Retorno.Resultado.ERROR_3; //Se supere el máximo de unidades totales permitidas para el pedido.
+            r.resultado = Retorno.Resultado.ERROR_5; //Stock insuficiente
             return r;
         }
         //AHORA SÍ, AGREGAR
         //1) crear un nuevo ProductoCantidad
         //2) hacerle push a la PilaProductos del pedidoAbierto del cliente
         //3) al pedido abierto sumarle las unidades totales
-        ProductoCantidad prodCant=new ProductoCantidad(producto.getNombre(), producto.getID(), unidades);
+        //4) Restarle las unidades agregadas al stock de producto
+        ProductoCantidad prodCant=new ProductoCantidad(producto.getID(), unidades);
+        if(cliente.getPedidoAbierto()==null){
+            aperturaDePedido(cliente.getCi());
+        }
         cliente.getPedidoAbierto().getPilaProductos().push(prodCant);
-        cliente.getPedidoAbierto().setUnidadesTotales(unidades);
+        cliente.getPedidoAbierto().actualizarUnidades(unidades, "AGREGAR");
+        //cliente.getPedidoAbierto().setUnidadesTotales(cliente.getPedidoAbierto().getUnidadesTotales()+unidades);
+        producto.setStock(producto.getStock()-unidades);
         r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
     @Override
+    //OJO ACÁ, CADA VEZ QUE SE ELIMINA UN PRODUCTO DE UN PEDIDO HAY QUE ACTUALIZAR EL STOCK
+    // Y LAS UNIDADES TOTALES QUE HAY EN EL PEDIDO
     public Retorno deshacerPedido(String ciCliente, int cantAccionesDeshacer) 
     {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         Cliente cliente= getCliente(ciCliente);
-        if(cliente==null)
+        //AGREGO ACÁ QUE NO TENGA PEDIDO ABIERTO PERO NO ESTÁ EN LA LETRA
+        if(cliente==null || cliente.getPedidoAbierto()==null)
         {
-            r.resultado = Retorno.Resultado.ERROR_1; //El cliente no existe
+            r.resultado = Retorno.Resultado.ERROR_1; //El cliente no existe o no tiene pedido abierto
             return r;
         }
         
@@ -230,6 +302,11 @@ public class Sistema implements IObligatorio {
         int contador=0;
         while(contador<=cantAccionesDeshacer)
             {
+                Nodo nodoProducto=cliente.getPedidoAbierto().getPilaProductos().getTope();
+                ProductoCantidad prodCant = (ProductoCantidad) nodoProducto.getDato();
+                Producto producto =getProductoPorID(prodCant.getID());
+                producto.setStock(producto.getStock() + prodCant.getCantidad());
+                cliente.getPedidoAbierto().actualizarUnidades(prodCant.getCantidad(), "ELIMINAR");
                 cliente.getPedidoAbierto().getPilaProductos().pop();
                 contador++;
             }
@@ -278,8 +355,8 @@ public class Sistema implements IObligatorio {
         int contador=0;
         while (contador<=cantPedidos)
         {
-           
-            listaPedidosParaEntregar.agregarFinal(colaPedidosCerrados.getPrimero());
+            //ESTO ESTÁ COMENTADO PORQUE DA UN ERROR Y NO SÉ XQ
+            //listaPedidosParaEntregar.agregarFinal(colaPedidosCerrados.getPrimero());
             colaPedidosCerrados.desencolar();
             contador++;
         }

@@ -56,7 +56,6 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
 
     @Override
     public void borrarInicio() {
-
         if (!esVacia()) {
             setInicio(getInicio().getSiguiente());
             setCantidad(getCantidad() - 1);

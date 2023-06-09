@@ -2,7 +2,7 @@
 package clases;
 
 public class Producto implements Comparable<Producto> {
-
+    
     private String nombre;
     private String descripcion;
     private int stock;
@@ -26,18 +26,35 @@ public class Producto implements Comparable<Producto> {
         this.setID(ID);
     }
     
+    public Producto(int ID, String nombre) {
+        this.setID(ID);
+        this.setNombre(nombre);
+    }
 
     @Override
     public String toString() {
-        return "Producto: " + this.getNombre() + ", ID: " + this.getID();
+        return "Producto: " + this.getNombre() + "\n" 
+                + "ID: " + this.getID() + "\n" 
+                + "Stock: " + this.getStock() + "\n"
+                + "Pedidos del producto: " + this.getPedidosProducto() + "\n" +
+                "*_______________________________*";
     }
     
+      /*
     @Override
     public boolean equals(Object o) {
         Producto that = (Producto) o;
         return getNombre().equals(that.getNombre());
     }
-
+    */
+    
+    
+    @Override
+    public boolean equals(Object o) {
+        Producto that = (Producto) o;
+        return getID()==that.getID();
+    }
+    
     /**
      * @return the nombre
      */
