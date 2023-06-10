@@ -18,10 +18,15 @@ public class Main {
         p7_aperturaDePedido(p,s);
         p8_agregarProductoAPedido(p,s);
         p9_deshacerPedido(p, s);
+        p10_cerrarPedido(p,s);
+        p11_procesarPedido(p,s);
+        s.listarClientes();
+        System.out.println(" \n*_______________________________*");
+        s.listarProductos();
         p.imprimirResultadosPrueba();
     } 
         public static void p1_creacionSistema(Prueba p, Sistema s){
-            p.ver(s.crearSistemaDeAutoservicio(4).resultado, Retorno.Resultado.OK, "Sistema inicializado correctamente");
+            p.ver(s.crearSistemaDeAutoservicio(8).resultado, Retorno.Resultado.OK, "Sistema inicializado correctamente");
             p.ver(s.crearSistemaDeAutoservicio(3).resultado, Retorno.Resultado.ERROR_1, "Sistema no inicializado");
             p.ver(s.crearSistemaDeAutoservicio(0).resultado, Retorno.Resultado.ERROR_1, "Sistema no inicializado");
             p.ver(s.crearSistemaDeAutoservicio(-1).resultado, Retorno.Resultado.ERROR_1, "Sistema no inicializado");
@@ -84,20 +89,55 @@ public class Main {
         }
         
         public static void p8_agregarProductoAPedido(Prueba p,Sistema s){
+            
             p.ver(s.agregarProductoAPedido("1", 1,2).resultado, Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.agregarProductoAPedido("111", 6,2).resultado, Retorno.Resultado.ERROR_2, "El producto no existe");
             p.ver(s.agregarProductoAPedido("111", 1,-2).resultado, Retorno.Resultado.ERROR_4, "Unidades incorrectas");
             //Cliente 333 ya tiene pedido abierto pero vacío
-            p.ver(s.agregarProductoAPedido("333", 1,3).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
-            p.ver(s.agregarProductoAPedido("333", 3,4).resultado, Retorno.Resultado.ERROR_3, "Solo se puede agregar 3 unidades por producto");
-           //Cliente 111 no tiene pedido abierto, se abre en la función
+            p.ver(s.agregarProductoAPedido("333", 1,2).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
+             p.ver(s.agregarProductoAPedido("333", 3,3).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
+            p.ver(s.agregarProductoAPedido("333", 3,7).resultado, Retorno.Resultado.ERROR_3, "Supera la cantidad maxima de unidades por pedido");
+            //Cliente 111 no tiene pedido abierto, se abre en la función
             p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Nuevo pedido y producto agregado correctamente");
-            p.ver(s.agregarProductoAPedido("111", 1,2).resultado, Retorno.Resultado.ERROR_5, "El stock es insuficiente");
+            p.ver(s.agregarProductoAPedido("111", 1,2).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
+            p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
+            p.ver(s.agregarProductoAPedido("111", 1,1).resultado, Retorno.Resultado.ERROR_5, "El stock es insuficiente");
+            s.listaProductos.mostrar();
+            
+            //111 tiene 1 de p3 + 2 de p1 + 1 de p3// 333 tiene 2 de p1 + 3 de p3
+            
         }
         
         public static void p9_deshacerPedido(Prueba p, Sistema s){
+        
             p.ver(s.deshacerPedido("1", 1).resultado, Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.deshacerPedido("222", 1).resultado, Retorno.Resultado.ERROR_1, "El cliente no tiene pedido abierto");
             p.ver(s.deshacerPedido("111", -1).resultado, Retorno.Resultado.ERROR_2, "Numero de acciones incorrecto");
+            p.ver(s.deshacerPedido("111", 2).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente");
+            p.ver(s.deshacerPedido("333", 1).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente");
+            s.listaProductos.mostrar();
+            
+            //111 tiene 1 de p3 // 333 tiene 2 de p1 
+            
+            //el Producto1 arranca con pedidoProduto en 2, fue para probar un error mas arriba, luego hay que sacarlo
         }
+        
+        public static void p10_cerrarPedido(Prueba p, Sistema s){
+            
+            p.ver(s.cerrarPedido("1").resultado,Retorno.Resultado.ERROR_1, "El cliente no existe");
+            p.ver(s.cerrarPedido("222").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
+            p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");
+            p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
+                      
+        }
+        
+        public static void p11_procesarPedido(Prueba p, Sistema s){
+            
+            p.ver(s.procesarPedido(0).resultado,Retorno.Resultado.ERROR_1, "Cantidad de pedidos incorrecta");
+            p.ver(s.procesarPedido(2).resultado,Retorno.Resultado.ERROR_2, "Cantidad de pedidos a procesar mayor a cantidad de pedidos cerrados");
+            p.ver(s.procesarPedido(1).resultado,Retorno.Resultado.OK, "Pedidos procesados correctamente");      
+        }
+        
+
+    
 }

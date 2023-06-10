@@ -27,6 +27,7 @@ public class Cola<T extends Comparable> implements ICola<T> {
             getUltimo().setSiguiente(nuevoNodo);
         }
         setUltimo(nuevoNodo);
+        cantidad++;
     }
 
     @Override
@@ -39,6 +40,7 @@ public class Cola<T extends Comparable> implements ICola<T> {
         if (getPrimero() == null) {
             setUltimo(null);
         }
+        cantidad--;
         return dato;
     }
 

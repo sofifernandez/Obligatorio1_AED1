@@ -2,6 +2,7 @@ package sistemaAutogestion;
 
 import tads.*;
 import clases.*; 
+import java.util.HashSet;
 
 
 public class Sistema implements IObligatorio {
@@ -115,7 +116,7 @@ public class Sistema implements IObligatorio {
         if (buscarProd!=null) {
             r.resultado = Retorno.Resultado.ERROR_1; //Ya existe un producto con ese nombre
         } else {
-            listaProductos.agregarInicio(new Producto(nombre, descripcion));
+            listaProductos.agregarFinal(new Producto(nombre, descripcion));
             r.resultado = Retorno.Resultado.OK;
         }
         return r;
@@ -179,8 +180,6 @@ public class Sistema implements IObligatorio {
         return r;
     }
     */
-    
-    
 
     @Override
     public Retorno altaStockProducto(int nroProducto, int unidades) {
@@ -200,6 +199,7 @@ public class Sistema implements IObligatorio {
         return r;
     }
 
+    
     //--------------------------------------------------------------------------
     // Gestión de pedidos
     @Override
@@ -212,7 +212,7 @@ public class Sistema implements IObligatorio {
             return r;
         }
         
-        if (cliente.getPedidoAbierto()!=null) 
+        if (cliente.getPedidoAbierto() != null) 
         {
             r.resultado = Retorno.Resultado.ERROR_2; //El cliente ya tiene un pedido abierto
         } else 
@@ -228,6 +228,7 @@ public class Sistema implements IObligatorio {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         Cliente cliente= getCliente(ciCliente);
         Producto producto=getProductoPorID(nroProducto);
+        
         if(cliente==null)
         {
             r.resultado = Retorno.Resultado.ERROR_1; //El cliente no existe
@@ -244,7 +245,6 @@ public class Sistema implements IObligatorio {
             r.resultado = Retorno.Resultado.ERROR_4; //Unidades <=0
             return r;
         }
-        
         if(cliente.getPedidoAbierto().getUnidadesTotales() + unidades > this.maxUnidadesDePedido)
         {
             r.resultado = Retorno.Resultado.ERROR_3; //Se supera el máximo de unidades totales permitidas para el pedido.
@@ -261,23 +261,29 @@ public class Sistema implements IObligatorio {
         //2) hacerle push a la PilaProductos del pedidoAbierto del cliente
         //3) al pedido abierto sumarle las unidades totales
         //4) Restarle las unidades agregadas al stock de producto
-        ProductoCantidad prodCant=new ProductoCantidad(producto.getID(), unidades);
-        if(cliente.getPedidoAbierto()==null){
+        
+       //ProductoCantidad prodCant=new ProductoCantidad(producto.getID(),unidades)
+        ProductoCantidad prodCant=new ProductoCantidad(producto.getID()); //Aca le saque las unidades al constructor y se las cargo con el setunidades
+        prodCant.setCantidad(unidades);                               // Porque de la forma que estaba antes al prodCant no le cargaba las unidades
+       
+        if(cliente.getPedidoAbierto() == null){ //Si el cliente no tiene pedido abierto, se le abre uno
             aperturaDePedido(cliente.getCi());
         }
         cliente.getPedidoAbierto().getPilaProductos().push(prodCant);
         cliente.getPedidoAbierto().actualizarUnidades(unidades, "AGREGAR");
         //cliente.getPedidoAbierto().setUnidadesTotales(cliente.getPedidoAbierto().getUnidadesTotales()+unidades);
         producto.setStock(producto.getStock()-unidades);
+        producto.setPedidosProducto(producto.getPedidosProducto() +1);  //Para llevar la cuenta de PedidosProducto 
+        
         r.resultado = Retorno.Resultado.OK;
         return r;
     }
 
+    
     @Override
     //OJO ACÁ, CADA VEZ QUE SE ELIMINA UN PRODUCTO DE UN PEDIDO HAY QUE ACTUALIZAR EL STOCK
     // Y LAS UNIDADES TOTALES QUE HAY EN EL PEDIDO
-    public Retorno deshacerPedido(String ciCliente, int cantAccionesDeshacer) 
-    {
+    public Retorno deshacerPedido(String ciCliente, int cantAccionesDeshacer){
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         Cliente cliente= getCliente(ciCliente);
         //AGREGO ACÁ QUE NO TENGA PEDIDO ABIERTO PERO NO ESTÁ EN LA LETRA
@@ -295,29 +301,32 @@ public class Sistema implements IObligatorio {
         
         if(cantAccionesDeshacer > cliente.getPedidoAbierto().getPilaProductos().getCantidad())
         {
-            r.resultado = Retorno.Resultado.ERROR_3; //Las acciones son 0 o menores
+            r.resultado = Retorno.Resultado.ERROR_3; //cantidad de acciones solicitadas supere la cantidad de productos que fueron agregados.
             return r;
         }
         
         int contador=0;
-        while(contador<=cantAccionesDeshacer)
-            {
-                Nodo nodoProducto=cliente.getPedidoAbierto().getPilaProductos().getTope();
-                ProductoCantidad prodCant = (ProductoCantidad) nodoProducto.getDato();
-                Producto producto =getProductoPorID(prodCant.getID());
-                producto.setStock(producto.getStock() + prodCant.getCantidad());
-                cliente.getPedidoAbierto().actualizarUnidades(prodCant.getCantidad(), "ELIMINAR");
-                cliente.getPedidoAbierto().getPilaProductos().pop();
-                contador++;
-            }
-            if(cliente.getPedidoAbierto().getPilaProductos().esVacia())
-            {
-                cliente.setPedidoAbierto(null);
-            }
+        while(contador<cantAccionesDeshacer) //Aca si arranca de 0 deberia ser solo menor (<)
+        {
+            
+            Nodo nodoProducto=cliente.getPedidoAbierto().getPilaProductos().getTope();
+            ProductoCantidad prodCant = (ProductoCantidad) nodoProducto.getDato();
+            Producto producto =getProductoPorID(prodCant.getID());
+            producto.setStock(producto.getStock() + prodCant.getCantidad());
+            producto.setPedidosProducto(producto.getPedidosProducto() -1 ); //Para llevar la cuenta de PedidosProducto
+            cliente.getPedidoAbierto().actualizarUnidades(prodCant.getCantidad(), "ELIMINAR");
+            cliente.getPedidoAbierto().getPilaProductos().pop();
+            contador++;
+        }
+        if(cliente.getPedidoAbierto().getPilaProductos().esVacia())
+        {
+            cliente.setPedidoAbierto(null);
+        }
         r.resultado = Retorno.Resultado.OK;    
         return r;
     }
 
+    
     @Override
     public Retorno cerrarPedido(String ciCliente) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
@@ -329,11 +338,12 @@ public class Sistema implements IObligatorio {
         }
         
         if(cliente.getPedidoAbierto()==null){
-            r.resultado = Retorno.Resultado.ERROR_1; //El cliente no tiene un pedido abierto
+            r.resultado = Retorno.Resultado.ERROR_2; //El cliente no tiene un pedido abierto
             return r;
         }
         
         cliente.getListaPedidosCerrados().agregarInicio(cliente.getPedidoAbierto());
+        colaPedidosCerrados.encolar(cliente.getPedidoAbierto());
         cliente.setPedidoAbierto(null);
         r.resultado = Retorno.Resultado.OK;
         return r;
@@ -353,10 +363,9 @@ public class Sistema implements IObligatorio {
         }
         
         int contador=0;
-        while (contador<=cantPedidos)
+        while (contador < cantPedidos)
         {
-            //ESTO ESTÁ COMENTADO PORQUE DA UN ERROR Y NO SÉ XQ
-            //listaPedidosParaEntregar.agregarFinal(colaPedidosCerrados.getPrimero());
+            listaPedidosParaEntregar.agregarFinal(colaPedidosCerrados.obtenerPrimero());
             colaPedidosCerrados.desencolar();
             contador++;
         }
@@ -365,6 +374,9 @@ public class Sistema implements IObligatorio {
         
     }
 
+    //--------------------------------------------------------------------------
+    // Listados y Reportes
+    
     @Override
     public Retorno listarClientes() {
         //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -377,7 +389,7 @@ public class Sistema implements IObligatorio {
     @Override
     public Retorno listarProductos() { //ESTE ES RECURSIVA
         //Se muestran todos los productos en el orden que fueron registrados. Se muestra sus datos y el stock disponible de dicho producto.
-        //Si agregamos productos con 'agregarFinal() quedaría no?'
+        //Si agregamos productos con 'agregarFinal() quedaría no?' //Si SNIORA, ya lo cambie en agregar producto
         //Y en la recursividad hay que mostrar a la ida
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         listaProductos.mostrarRec();
@@ -394,7 +406,7 @@ public class Sistema implements IObligatorio {
         if (!listaClientes.esVacia()) {
             while (aux != null) {
                 Cliente cliente = (Cliente) aux.getDato();
-                if(cliente.getListaPedidosCerrados()!=null){
+                if(cliente.getPedidoAbierto()!=null){
                     System.out.println("---------------------------------");
                     System.out.println(cliente.toString());
                     System.out.println(cliente.getPedidoAbierto().getPilaProductos().getCantidad()); 

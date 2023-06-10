@@ -13,7 +13,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
     }
 
     public boolean verificarCantidad() {
-        return getCantidad() < getCantidadMax();
+        return cantidad < cantidadMax;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
             Nodo nuevo = new Nodo(n);
             nuevo.setSiguiente(getInicio());
             setInicio(nuevo); //inicio = nuevo;  
-            setCantidad(getCantidad() + 1);
+            cantidad++;
         } else {
             System.out.println("Lista llena, no se pueden agregar más elementos");
         }
@@ -42,48 +42,49 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
             if (verificarCantidad()) {
                 Nodo nuevo = new Nodo(n);
 
-                Nodo aux = getInicio();
+                Nodo aux = inicio;
 
                 while (aux.getSiguiente() != null) {
                     aux = aux.getSiguiente();
                 }
 
                 aux.setSiguiente(nuevo);
-                setCantidad(getCantidad() + 1);
+                cantidad++;
             }
         }
     }
 
     @Override
     public void borrarInicio() {
+
         if (!esVacia()) {
-            setInicio(getInicio().getSiguiente());
-            setCantidad(getCantidad() - 1);
+            inicio = inicio.getSiguiente();
+            cantidad--;
         }
     }
 
     @Override
     public void borrarFin() {
-        Nodo aux = getInicio();
+        Nodo aux = inicio;
         if (!esVacia()) {
             while (aux.getSiguiente().getSiguiente() != null) {
                 aux = aux.getSiguiente();
             }
             aux.setSiguiente(null);
-            setCantidad(getCantidad() - 1);
+            cantidad--;
         }
     }
 
     @Override
     public void vaciar() {
-        setInicio(null);
-        setCantidad(0);
+        inicio = null;
+        cantidad = 0;
     }
 
     @Override
     public void mostrar() {
 
-        Nodo aux = getInicio();
+        Nodo aux = inicio;
 
         if (!esVacia()) {
             while (aux != null) {
@@ -101,7 +102,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
         boolean existe = false;
         if (!esVacia()) {
             Nodo nuevo = new Nodo(n);
-            Nodo aux = getInicio();
+            Nodo aux = inicio;
             while (aux != null) {
                 if (aux.getDato().equals(nuevo.getDato())) {
                     return true;
@@ -133,7 +134,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
 
                         nuevo.setSiguiente(actual.getSiguiente());
                         actual.setSiguiente(nuevo);
-                        setCantidad(getCantidad() + 1);
+                        cantidad++;
                     }
                 }
             }
@@ -146,13 +147,13 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
 
     @Override
     public int cantidadElementos() {
-        return getCantidad();
+        return cantidad;
     }
 
     @Override
     public Nodo obtenerElemento(T n) {
         if (!esVacia()) {
-            Nodo aux = getInicio();
+            Nodo aux = inicio;
             Nodo nuevo = new Nodo(n);
             while(aux != null && !aux.getDato().equals(nuevo.getDato())){
                 aux=aux.getSiguiente();
@@ -167,10 +168,10 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
     @Override
     public void eliminarElemento(T n) {
         if (!esVacia()) {
-            Nodo aux = getInicio();
+            Nodo aux = inicio;
             Nodo nuevo = new Nodo(n);
             
-            if(getInicio().getDato().equals(nuevo.getDato())){
+            if(inicio.getDato().equals(nuevo.getDato())){
                 borrarInicio();
             }
             else{
@@ -179,33 +180,13 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
                 }
                 if(aux.getSiguiente()!=null && aux.getSiguiente().getDato().equals(nuevo.getDato())){
                     aux.setSiguiente(aux.getSiguiente().getSiguiente());
-                    setCantidad(getCantidad() - 1);
+                    cantidad--;
                 }
             }
         }
     }
     
-    @Override
-    public void mostrarRec() {
-        
-        if(!esVacia()){
-               mostrarRec2(this.getInicio());
-        } else {
-            System.out.println("No tiene elementos");
-        }
-    }
     
-    private void mostrarRec2(Nodo nodo){
-        if(nodo.getSiguiente()==null)
-        {
-            System.out.println(nodo.getDato().toString()); //hacer el toString en Producto (datos y stock) y Pedido (id y cliente)
-        } else {
-            System.out.println(nodo.getDato().toString());
-            nodo=nodo.getSiguiente();
-            mostrarRec2(nodo);
-            
-        }
-    }
     
     
     
@@ -222,34 +203,4 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
     public void setInicio(Nodo inicio) {
         this.inicio = inicio;
     }
-
-    /**
-     * @return the cantidad
-     */
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    /**
-     * @param cantidad the cantidad to set
-     */
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    /**
-     * @return the cantidadMax
-     */
-    public int getCantidadMax() {
-        return cantidadMax;
-    }
-
-    /**
-     * @param cantidadMax the cantidadMax to set
-     */
-    public void setCantidadMax(int cantidadMax) {
-        this.cantidadMax = cantidadMax;
-    }
-
-    
 }

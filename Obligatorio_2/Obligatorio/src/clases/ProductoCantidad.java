@@ -6,7 +6,7 @@ public class ProductoCantidad {
     private int ID;
     private int cantidad;
      
-     public ProductoCantidad(int ID, int cantidad) {
+     public ProductoCantidad(int ID) {
        // this.setNombre(nombre);
         this.setID(ID);
         this.setCantidad(0);
