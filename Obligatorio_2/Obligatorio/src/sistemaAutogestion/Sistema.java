@@ -493,13 +493,12 @@ public class Sistema implements IObligatorio {
         
         
         for (int i = 1; i < mat2.length; i++) { //Dentro de una fila, o sea de un producto
+            Cliente cliente=getCliente(mat2[i][0]); //esto funciona
             for (int j = 1; j < mat2[i].length; j++) { //Dentro de una columna, o sea cliente
                 
-                Cliente cliente=getCliente(mat2[i][0]); //esto funciona
-               
                 Producto producto= getProductoPorID(Integer.parseInt(mat2[0][j])); //esto funciona
 
-                //ESTÁ DANDO UN ERROR ACÁ..
+                
                 int cantidadTotal=cliente.cantidadProdTotal(producto.getID()); 
                 mat2[i][j]=Integer.toString(cantidadTotal);
             }

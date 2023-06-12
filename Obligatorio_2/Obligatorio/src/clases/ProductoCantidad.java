@@ -65,7 +65,7 @@ public class ProductoCantidad {
     
     @Override
     public boolean equals(Object o) {
-        Producto that = (Producto) o;
+        ProductoCantidad that = (ProductoCantidad) o;
         return getID()==that.getID();
     }
     

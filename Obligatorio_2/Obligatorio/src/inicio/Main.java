@@ -20,12 +20,12 @@ public class Main {
         p9_deshacerPedido(p, s);
         p10_cerrarPedido(p,s);
         p11_procesarPedido(p,s);
-        s.listarClientes();
+       // s.listarClientes();
         System.out.println(" \n*_______________________________*");
-        s.listarProductos();
+      //  s.listarProductos();
         System.out.println(" \n*_______________________________*");
-        s.listarPedidosAbiertos();
-        //s.reporteDePedidosSolicitadosXCliente();
+      //  s.listarPedidosAbiertos();
+        s.reporteDePedidosSolicitadosXCliente();
         p.imprimirResultadosPrueba();
     } 
         public static void p1_creacionSistema(Prueba p, Sistema s){
@@ -103,11 +103,11 @@ public class Main {
             //Cliente 111 no tiene pedido abierto, se abre en la función
             p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Nuevo pedido y producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("111", 1,2).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
-            p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
+            //p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("111", 1,1).resultado, Retorno.Resultado.ERROR_5, "El stock es insuficiente");
             s.listaProductos.mostrar();
             
-            //111 tiene 1 de p3 + 2 de p1 + 1 de p3// 333 tiene 2 de p1 + 3 de p3
+            //111 tiene 1 de p3 + 2 de p1// 333 tiene 2 de p1 + 3 de p3
             
         }
         
@@ -120,7 +120,7 @@ public class Main {
             p.ver(s.deshacerPedido("333", 1).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente");
             s.listaProductos.mostrar();
             
-            //111 tiene 1 de p3 // 333 tiene 2 de p1 
+            //111 No tiene nada // 333 tiene 2 de p1 
             
             //el Producto1 arranca con pedidoProduto en 2, fue para probar un error mas arriba, luego hay que sacarlo
         }
@@ -129,9 +129,9 @@ public class Main {
             
             p.ver(s.cerrarPedido("1").resultado,Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.cerrarPedido("222").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
-            p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");
+          //p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");
             p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
-                      
+            p.ver(s.cerrarPedido("333").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");       
         }
         
         public static void p11_procesarPedido(Prueba p, Sistema s){

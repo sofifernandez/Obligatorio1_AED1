@@ -59,8 +59,9 @@ public class Cliente implements Comparable<Cliente> {
         int cantidadTotal=0;
         if (!listaPedidosCerrados.esVacia()) {
             Nodo aux = listaPedidosCerrados.getInicio();
-            Pedido pedido = (Pedido) aux.getDato();
+            
             while(aux != null){
+                Pedido pedido = (Pedido) aux.getDato();
                 cantidadTotal=cantidadTotal+pedido.cantProducto(IDProd);
                 aux=aux.getSiguiente();
                 //if(aux!=null){

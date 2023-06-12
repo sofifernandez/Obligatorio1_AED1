@@ -73,11 +73,12 @@ public class Pedido implements Comparable<Pedido>{
     }
     
     public int cantProducto(int IDProd){ //devuelve la cantidad de unidades del producto tal, si no está devuelve 0
-        //throw new UnsupportedOperationException("Not supported yet.");
+        
         int cantidad=0;
         Nodo nodoProd= pilaProductos.obtenerElemento(new ProductoCantidad(IDProd));
-        ProductoCantidad prodCant = (ProductoCantidad) nodoProd.getDato();
+        
         if(nodoProd!=null){
+            ProductoCantidad prodCant = (ProductoCantidad) nodoProd.getDato();
             cantidad= prodCant.getCantidad();
         }
         return cantidad;
