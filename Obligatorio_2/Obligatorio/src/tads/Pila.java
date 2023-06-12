@@ -64,6 +64,7 @@ public class Pila<T> implements IPila<T> {
         return existe;
     }
     
+    @Override
     public Nodo obtenerElemento(T n) {
         if (!esVacia()) {
             Nodo aux = getTope();

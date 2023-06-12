@@ -54,6 +54,24 @@ public class Cliente implements Comparable<Cliente> {
          }
          return unidadesTot;
     }
+    
+    public int cantidadProdTotal(int IDProd){
+        int cantidadTotal=0;
+        if (!listaPedidosCerrados.esVacia()) {
+            Nodo aux = listaPedidosCerrados.getInicio();
+            Pedido pedido = (Pedido) aux.getDato();
+            while(aux != null){
+                cantidadTotal=cantidadTotal+pedido.cantProducto(IDProd);
+                aux=aux.getSiguiente();
+                //if(aux!=null){
+                //    pedido = (Pedido) aux.getDato();
+               // }
+            } 
+        } else {
+            return 0;
+        }
+        return cantidadTotal;
+    }
 
     @Override
     public boolean equals(Object o) {

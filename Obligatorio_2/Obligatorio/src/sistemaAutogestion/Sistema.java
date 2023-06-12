@@ -439,9 +439,11 @@ public class Sistema implements IObligatorio {
     //hay que sumar la cantidad de unidades de cada producto si aparece en más de un pedido cerrado?
     public Retorno reporteDePedidosSolicitadosXCliente() {
         //Crear la matriz primero y después mostrarla
-        int rows=listaClientes.getCantidad();
+        int rows=listaClientes.getCantidad()+1;
         int columns=listaProductos.getCantidad()+1;
+        System.out.println("FILAS:");
         System.out.println(Integer.toString(rows));
+        System.out.println("COLUMNAS:");
         System.out.println(Integer.toString(columns));
         //Object[][] mat= new Object[rows][columns];
         String[][] mat2 = new String[rows][columns];
@@ -458,15 +460,18 @@ public class Sistema implements IObligatorio {
         // D
         //(Clientes)
                
+        
         //Poner los nombres de los clientes en la Columna 0
         Nodo auxCliente = listaClientes.getInicio();
         while (auxCliente != null) {
-            for (int i=0; i < mat2.length; i++){
+            for (int i=1; i < mat2.length; i++){
                 Cliente cliente = (Cliente) auxCliente.getDato();
-                mat2[i][0]=cliente.getNombre();
+                mat2[i][0]=cliente.getCi();
                 auxCliente = auxCliente.getSiguiente();
             }   
         }
+        
+        
         
         //Poner los nombres de los productos en la fila 0
         Nodo auxProd = listaProductos.getInicio();
@@ -478,6 +483,30 @@ public class Sistema implements IObligatorio {
             }   
         }
         
+        //POPULAR LA MATRIZ
+        //cantidadProdTotal
+        
+        //mat2[fila i][columna j]
+        //mat2[0][j] --> nombres Productos
+        //mat2[i][0] --> nombres clientes
+        
+        
+        
+        for (int i = 1; i < mat2.length; i++) { //Dentro de una fila, o sea de un producto
+            for (int j = 1; j < mat2[i].length; j++) { //Dentro de una columna, o sea cliente
+                
+                Cliente cliente=getCliente(mat2[i][0]); //esto funciona
+               
+                Producto producto= getProductoPorID(Integer.parseInt(mat2[0][j])); //esto funciona
+
+                //ESTÁ DANDO UN ERROR ACÁ..
+                int cantidadTotal=cliente.cantidadProdTotal(producto.getID()); 
+                mat2[i][j]=Integer.toString(cantidadTotal);
+            }
+        }
+        
+        
+        //MOSTRAR
         for (int i = 0; i < mat2.length; i++) {
             for (int j = 0; j < mat2[i].length; j++) {
                 System.out.print(mat2[i][j] + " ");
@@ -485,21 +514,7 @@ public class Sistema implements IObligatorio {
             System.out.println();
         }
         
-        /*
-        //POPULAR MATRIZ        
-        for (int i = 0; i < mat2.length; i++) {
-            Cliente cliente=getCliente(mat2[i][0]);
-            for (int j = 1; j < mat[i].length; j++) {
-                int IDProd= Integer.parseInt(mat2[0][j]);
-                int unidades=cliente.unidadesTotalesProducto(IDProd);
-                mat2[i][j]=Integer.toString(unidades);
-                System.out.print(mat[i][j] + " ");
-            }
-            System.out.println();
-        }
-       
         
-    */
         Retorno r = new Retorno(Retorno.Resultado.OK);
         return r;
     }

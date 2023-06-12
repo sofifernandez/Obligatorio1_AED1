@@ -1,7 +1,7 @@
 
 package clases;
 
-import tads.Pila;
+import tads.*;
 
 public class Pedido implements Comparable<Pedido>{
     
@@ -75,8 +75,11 @@ public class Pedido implements Comparable<Pedido>{
     public int cantProducto(int IDProd){ //devuelve la cantidad de unidades del producto tal, si no está devuelve 0
         //throw new UnsupportedOperationException("Not supported yet.");
         int cantidad=0;
-        
-        ProductoCantidad productoCant=pilaProductos.obtenerElemento(new ProductoCantidad(IDProd));
+        Nodo nodoProd= pilaProductos.obtenerElemento(new ProductoCantidad(IDProd));
+        ProductoCantidad prodCant = (ProductoCantidad) nodoProd.getDato();
+        if(nodoProd!=null){
+            cantidad= prodCant.getCantidad();
+        }
         return cantidad;
     }
         
