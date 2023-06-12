@@ -100,7 +100,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
     public boolean existeElemento(T n) {
         boolean existe = false;
         if (!esVacia()) {
-            Nodo nuevo = new Nodo(n);
+            Nodo nuevo = new Nodo(n); // es necesario esto? no se puede poner aux.getDato().equals(n)?
             Nodo aux = getInicio();
             while (aux != null) {
                 if (aux.getDato().equals(nuevo.getDato())) {

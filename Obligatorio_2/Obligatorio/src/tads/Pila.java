@@ -49,12 +49,12 @@ public class Pila<T> implements IPila<T> {
     }
 
     @Override
-    public boolean buscarElemento(T n) {
+    public boolean existeElemento(T n) {
         Nodo aux = getTope();
         boolean existe = false;
         
         while(existe != true && aux!=null){
-            if(n == aux.getDato()){
+            if(n.equals(aux.getDato())){
                 existe = true;
             }
             else{
@@ -62,6 +62,20 @@ public class Pila<T> implements IPila<T> {
             }
         }
         return existe;
+    }
+    
+    public Nodo obtenerElemento(T n) {
+        if (!esVacia()) {
+            Nodo aux = getTope();
+            //Nodo nuevo = new Nodo(n);
+            while(aux != null && !aux.getDato().equals(n)){
+                aux=aux.getSiguiente();
+            }
+            if(aux!=null && aux.getDato().equals(n)){
+                return aux;
+            }
+        }
+        return null;
     }
 
     @Override

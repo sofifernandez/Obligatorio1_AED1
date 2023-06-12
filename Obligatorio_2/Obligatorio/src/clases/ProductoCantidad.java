@@ -11,6 +11,11 @@ public class ProductoCantidad {
         this.setID(ID);
         this.setCantidad(0);
     }
+     
+    @Override
+    public String toString() {
+        return "ProductoID: " + this.getID() + "-->"+ " Cantidad: " + this.getCantidad();
+    }
 
     /**
      * @return the nombre

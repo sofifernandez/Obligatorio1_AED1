@@ -13,7 +13,9 @@ public interface IPila<T> {
     
     public Nodo verTope();
     
-    public boolean buscarElemento(T n);
+    public boolean existeElemento(T n);
+    
+    public Nodo obtenerElemento(T n);
     
     public void vaciar();
 

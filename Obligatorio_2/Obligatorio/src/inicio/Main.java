@@ -23,6 +23,9 @@ public class Main {
         s.listarClientes();
         System.out.println(" \n*_______________________________*");
         s.listarProductos();
+        System.out.println(" \n*_______________________________*");
+        s.listarPedidosAbiertos();
+        //s.reporteDePedidosSolicitadosXCliente();
         p.imprimirResultadosPrueba();
     } 
         public static void p1_creacionSistema(Prueba p, Sistema s){

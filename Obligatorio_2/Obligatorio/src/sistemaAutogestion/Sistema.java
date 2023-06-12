@@ -186,7 +186,6 @@ public class Sistema implements IObligatorio {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if (unidades > 0) {
             if (listaProductos.existeElemento(new Producto(nroProducto))) {
-                //Nodo nuevo = listaProductos.obtenerElemento(nroProducto);
                 Producto producto = getProductoPorID(nroProducto);
                 producto.setStock(unidades + producto.getStock());
                 r.resultado = Retorno.Resultado.OK;
@@ -379,7 +378,6 @@ public class Sistema implements IObligatorio {
     
     @Override
     public Retorno listarClientes() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         listaClientes.mostrar();
         r.resultado = Retorno.Resultado.OK;
@@ -399,6 +397,7 @@ public class Sistema implements IObligatorio {
 
     @Override
     //Como mostramos una pila??? Qué información de los pedidos habría que mostrar??
+    //FALTA MOSTRAR QUÉ PRODUCTOS TIENE EL PEDIDO Y LAS UNIDADES
     public Retorno listarPedidosAbiertos() {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         Nodo aux = listaClientes.getInicio();
@@ -409,7 +408,8 @@ public class Sistema implements IObligatorio {
                 if(cliente.getPedidoAbierto()!=null){
                     System.out.println("---------------------------------");
                     System.out.println(cliente.toString());
-                    System.out.println(cliente.getPedidoAbierto().getPilaProductos().getCantidad()); 
+                    //System.out.println(cliente.getPedidoAbierto().getPilaProductos().getCantidad()); 
+                   cliente.getPedidoAbierto().getPilaProductos().mostrar(); 
                 }
                 aux = aux.getSiguiente();
             }
@@ -439,14 +439,18 @@ public class Sistema implements IObligatorio {
     //hay que sumar la cantidad de unidades de cada producto si aparece en más de un pedido cerrado?
     public Retorno reporteDePedidosSolicitadosXCliente() {
         //Crear la matriz primero y después mostrarla
-        int rows=listaClientes.cantidadElementos();
-        int columns=listaProductos.cantidadElementos();
-        Object[][] mat= new Object[rows][columns];
+        int rows=listaClientes.getCantidad();
+        int columns=listaProductos.getCantidad()+1;
+        System.out.println(Integer.toString(rows));
+        System.out.println(Integer.toString(columns));
+        //Object[][] mat= new Object[rows][columns];
         String[][] mat2 = new String[rows][columns];
+        
+        //ESTRATEGIA:
         //Agarrar la lista de productos, e ir uno por uno y buscarlos en los clientes? 
         
         //Cliente -->ListaPedidosCerrados-->Pedido --> cola de ProductoCantidad
-        //      1   2   3   4  (ID de productos)
+        //      1   2   3   4  (ID de productos) --> fila 0
         //---------------------------
         // A    0   3   1   0   
         // B
@@ -474,7 +478,14 @@ public class Sistema implements IObligatorio {
             }   
         }
         
+        for (int i = 0; i < mat2.length; i++) {
+            for (int j = 0; j < mat2[i].length; j++) {
+                System.out.print(mat2[i][j] + " ");
+            }
+            System.out.println();
+        }
         
+        /*
         //POPULAR MATRIZ        
         for (int i = 0; i < mat2.length; i++) {
             Cliente cliente=getCliente(mat2[i][0]);
@@ -487,20 +498,12 @@ public class Sistema implements IObligatorio {
             System.out.println();
         }
        
-        //MOSTRAR MATRIZ
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[i].length; j++) {
-                System.out.print(mat[i][j] + " ");
-            }
-            System.out.println();
-        }
         
+    */
         Retorno r = new Retorno(Retorno.Resultado.OK);
         return r;
-        
-    
-        
     }
+    
 
 
 }

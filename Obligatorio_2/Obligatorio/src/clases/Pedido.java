@@ -72,8 +72,12 @@ public class Pedido implements Comparable<Pedido>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    public int cantProducto(int IDProd){ //devuelve la cantidad de unidades del producto tal
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int cantProducto(int IDProd){ //devuelve la cantidad de unidades del producto tal, si no está devuelve 0
+        //throw new UnsupportedOperationException("Not supported yet.");
+        int cantidad=0;
+        
+        ProductoCantidad productoCant=pilaProductos.obtenerElemento(new ProductoCantidad(IDProd));
+        return cantidad;
     }
         
 }
