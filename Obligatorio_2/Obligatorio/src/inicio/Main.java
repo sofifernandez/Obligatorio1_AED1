@@ -17,17 +17,13 @@ public class Main {
         p6_altaStockProducto(p,s);
         p7_aperturaDePedido(p,s);
         p8_agregarProductoAPedido(p,s);
-        //p9_deshacerPedido(p, s);
+        p9_deshacerPedido(p, s);
         p10_cerrarPedido(p,s);
-        //p11_procesarPedido(p,s);
-       // s.listarClientes();
-        System.out.println(" \n*_______________________________*");
-      //  s.listarProductos();
-        System.out.println(" \n*_______________________________*");
-      //  s.listarPedidosAbiertos();
-        s.pedidosCerradosDeClientes("111");
-        s.reporteDePedidosSolicitadosXCliente();
+        p11_procesarPedido(p,s);
         p.imprimirResultadosPrueba();
+        listados(s);
+       
+       
     } 
         public static void p1_creacionSistema(Prueba p, Sistema s){
             p.ver(s.crearSistemaDeAutoservicio(8).resultado, Retorno.Resultado.OK, "Sistema inicializado correctamente");
@@ -82,7 +78,7 @@ public class Main {
             p.ver(s.altaStockProducto(1,4).resultado, Retorno.Resultado.OK, "Stock actualizado");
             p.ver(s.altaStockProducto(3,4).resultado, Retorno.Resultado.OK, "Stock actualizado");
             p.ver(s.altaStockProducto(3,2).resultado, Retorno.Resultado.OK, "Stock actualizado");
-           
+            s.listaProductos.mostrar();
         }
         
         public static void p7_aperturaDePedido(Prueba p, Sistema s){
@@ -93,53 +89,85 @@ public class Main {
         }
         
         public static void p8_agregarProductoAPedido(Prueba p,Sistema s){
-             s.listaProductos.mostrar();
+            s.listaProductos.mostrar();
             p.ver(s.agregarProductoAPedido("1", 1,2).resultado, Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.agregarProductoAPedido("111", 6,2).resultado, Retorno.Resultado.ERROR_2, "El producto no existe");
             p.ver(s.agregarProductoAPedido("111", 1,-2).resultado, Retorno.Resultado.ERROR_4, "Unidades incorrectas");
-            //Cliente 333 ya tiene pedido abierto pero vacío
+            //Cliente 333 ya tiene pedido abierto pero vacío 
             p.ver(s.agregarProductoAPedido("333", 1,2).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("333", 3,3).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("333", 3,7).resultado, Retorno.Resultado.ERROR_3, "Supera la cantidad maxima de unidades por pedido");
-            //Cliente 111 no tiene pedido abierto, se abre en la función
+            //Cliente 111 no tiene pedido abierto, se abre en la función 
             p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Nuevo pedido y producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("111", 1,2).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("111", 1,1).resultado, Retorno.Resultado.ERROR_5, "El stock es insuficiente");
-            s.listaProductos.mostrar();
-            
-            //111 tiene 2 de p3 + 2 de p1 // 333 tiene 2 de p1 + 3 de p3
-            
+            s.listaProductos.mostrar();    
+            //Producto 1: en pedido de 333 y 111
+            //Producto 3: en pedido de 333 y 111
         }
         
         public static void p9_deshacerPedido(Prueba p, Sistema s){
-        
             p.ver(s.deshacerPedido("1", 1).resultado, Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.deshacerPedido("222", 1).resultado, Retorno.Resultado.ERROR_1, "El cliente no tiene pedido abierto");
             p.ver(s.deshacerPedido("111", -1).resultado, Retorno.Resultado.ERROR_2, "Numero de acciones incorrecto");
+            p.ver(s.deshacerPedido("111", 5).resultado, Retorno.Resultado.ERROR_3, "La cantidad de acciones solicitadas supere la cantidad de productos ");
             p.ver(s.deshacerPedido("111", 2).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente");
             p.ver(s.deshacerPedido("333", 1).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente");
             s.listaProductos.mostrar();
             
-            //111 No tiene nada // 333 tiene 2 de p1 
-            
-            //el Producto1 arranca con pedidoProduto en 2, fue para probar un error mas arriba, luego hay que sacarlo
+            //111 No tiene nada // 333 queda con 2 unidades de p1 
+           
         }
         
         public static void p10_cerrarPedido(Prueba p, Sistema s){
             
             p.ver(s.cerrarPedido("1").resultado,Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.cerrarPedido("222").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
-            p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");
-           // p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
+            p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
             p.ver(s.cerrarPedido("333").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");       
         }
         
         public static void p11_procesarPedido(Prueba p, Sistema s){
             
             p.ver(s.procesarPedido(0).resultado,Retorno.Resultado.ERROR_1, "Cantidad de pedidos incorrecta");
-            p.ver(s.procesarPedido(2).resultado,Retorno.Resultado.ERROR_2, "Cantidad de pedidos a procesar mayor a cantidad de pedidos cerrados");
+            p.ver(s.procesarPedido(5).resultado,Retorno.Resultado.ERROR_2, "Cantidad de pedidos a procesar mayor a cantidad de pedidos cerrados");
             p.ver(s.procesarPedido(1).resultado,Retorno.Resultado.OK, "Pedidos procesados correctamente");      
+        }
+        
+        public static void listados(Sistema s){
+        System.out.println("************************************************************");
+        System.out.println("************************************************************");
+        System.out.println("************************************************************");
+        System.out.println("**********************LISTADOS********************************");
+        System.out.println(" \n");
+        System.out.println(" \n*--------CLIENTES---------------*");
+        System.out.println(" \n");
+        s.listarClientes();
+        System.out.println(" \n");
+        System.out.println(" \n*--------PRODUCTOS---------------*");
+        System.out.println(" \n");
+        s.listarProductos();
+        System.out.println(" \n");
+        System.out.println(" \n*--------PEDIDOS ABIERTOS---------------*");
+        System.out.println(" \n");
+        s.listarPedidosAbiertos();
+        System.out.println(" \n");
+        System.out.println(" \n*--------PEDIDOS CERRADOS DE CLIENTE 111---------------*");
+        System.out.println(" \n");
+        s.pedidosCerradosDeClientes("111");
+        System.out.println(" \n");
+        System.out.println(" \n*--------PEDIDOS CERRADOS DE CLIENTE 333---------------*");
+        System.out.println(" \n");
+        s.pedidosCerradosDeClientes("333");
+        System.out.println(" \n");
+        System.out.println(" \n*--------PRODUCTOS PARA ENTREGAR---------------*");
+        System.out.println(" \n");
+        s.productosParaEntregar();
+        System.out.println(" \n");
+        System.out.println(" \n*-------------------MATRIZ--------------------------*");
+        System.out.println(" \n");
+        s.reporteDePedidosSolicitadosXCliente();
         }
         
 

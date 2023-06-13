@@ -82,9 +82,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
 
     @Override
     public void mostrar() {
-
         Nodo aux = getInicio();
-
         if (!esVacia()) {
             while (aux != null) {
                 System.out.println(aux.getDato() + " ");
@@ -96,6 +94,24 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
 
     }
 
+    @Override
+    public boolean existeElemento(T n) {
+        boolean existe = false;
+        if (!esVacia()) {
+            //Nodo nuevo = new Nodo(n); // es necesario esto? no se puede poner aux.getDato().equals(n)?
+            Nodo aux = getInicio();
+            while (aux != null) {
+                if (aux.getDato().equals(n)) {
+                    return true;
+                } else {
+                    aux = aux.getSiguiente();
+                }
+            }
+        }
+        return existe;
+    }
+    
+    /*
     @Override
     public boolean existeElemento(T n) {
         boolean existe = false;
@@ -113,7 +129,7 @@ public class ListaSimple<T extends Comparable> implements ILista<T> {
         return existe;
     }
 
-
+*/
     @Override
     public void agregarOrd(T n) {
         if (this.verificarCantidad()) {

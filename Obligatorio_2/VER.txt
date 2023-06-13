@@ -1,5 +1,14 @@
 -Cada vez que se quiere utilizar la función .obtenerElemento() o .estaElemento() de ListaSimple, tenemos que crear un nuevo objeto que es el que vamos a querer buscar. En el caso de producto se le suma +1 al ID de la clase cada vez, es correcto esto?
 
-- en deshacerPedido() no está contemplado el ERROR de que el cliente no tiene pedido abierto
+- en  procesarPedido(int cantPedidos)
+FALTAN RESTAURAR LOS PEDIDOS DE CADA PRODUCTO (porque dice que sea en pedidos cerrados y abiertos)
 
-- cómo se muestra una pila? Necesitaríamos saber para la función listarPedidosAbiertos() y para el de la matriz 
+listarPedidosAbiertos()
+-FALTAN TENER PEDIDOS ABIERTOS
+
+pedidosCerradosDeClientes(String ci
+-FALTA PEDIDOS CERRADOS (EL CLIENTE 3 TIENE)
+ojo acá. El cliente 333 tiene un pedido que está protnto para entregar y no tiene pedido cerrado, entonces cuando vas a imprimir el pedido cerrado te imprime vacío y debería imprimir 'Está vacía la lista', como en el 111
+
+productosParaEntregar()
+-está mostrando info de los pedidos para entrefgar pero no de sus productos

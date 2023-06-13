@@ -100,6 +100,7 @@ public class Pedido implements Comparable<Pedido>{
     }
     @Override  
     public String toString(){
+        getPilaProductos().mostrar();
         return "Pedido ID: " + this.getIDPedido() + " Estado: " + this.getEstado() + " Cliente: " + this.getCli().getCi();
     }
 }
