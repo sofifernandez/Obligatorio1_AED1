@@ -58,7 +58,7 @@ public class Pila<T> implements IPila<T> {
                 existe = true;
             }
             else{
-                aux.getSiguiente();
+                aux=aux.getSiguiente();
             }
         }
         return existe;

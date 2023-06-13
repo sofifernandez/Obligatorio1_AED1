@@ -7,7 +7,7 @@ public class Cliente implements Comparable<Cliente> {
 
     private String nombre;
     private String ci;
-    private ListaSimple listaPedidosCerrados;
+    private ListaSimple listaPedidos;
     private Pedido pedidoAbierto;
     //Este atributo es para forzar el ERROR2 de eliminarCliente
     //private String pedidoAbiertoString;
@@ -15,7 +15,7 @@ public class Cliente implements Comparable<Cliente> {
      public Cliente(String nombre, String ci) {
         this.setNombre(nombre);
         this.setCi(ci);
-        listaPedidosCerrados = new ListaSimple(20);
+        listaPedidos = new ListaSimple(20);
         pedidoAbierto = null;
         
     }
@@ -23,17 +23,17 @@ public class Cliente implements Comparable<Cliente> {
     public Cliente(String ci) {
         this.setNombre("");
         this.setCi(ci);
-        listaPedidosCerrados = new ListaSimple(20);
+        listaPedidos = new ListaSimple(20);
         pedidoAbierto = null;
     }
     
     
-    public ListaSimple getListaPedidosCerrados() {
-        return listaPedidosCerrados;
+    public ListaSimple getlistaPedidos() {
+        return listaPedidos;
     }
 
-    public void setListaPedidosCerrados(ListaSimple listaPedidosCerrados) {
-        this.listaPedidosCerrados = listaPedidosCerrados;
+    public void setlistaPedidos(ListaSimple listaPedidos) {
+        this.listaPedidos = listaPedidos;
     }
 
     public Pedido getPedidoAbierto() {
@@ -45,11 +45,13 @@ public class Cliente implements Comparable<Cliente> {
     }
 
     public int unidadesTotalesProducto(int IDProducto){
-         Nodo auxPedidos = listaPedidosCerrados.getInicio();
+         Nodo auxPedidos = listaPedidos.getInicio();
+         
          int unidadesTot=0;
          while(auxPedidos!=null){ //recorrer la lista de pedidosCerrados 
              Pedido pedido = (Pedido) auxPedidos.getDato();
              unidadesTot=unidadesTot+pedido.cantProducto(IDProducto); //sumarle las unidades de ese producto, si no está devuelve un 0
+             
              auxPedidos=auxPedidos.getSiguiente();
          }
          return unidadesTot;
@@ -57,8 +59,8 @@ public class Cliente implements Comparable<Cliente> {
     
     public int cantidadProdTotal(int IDProd){
         int cantidadTotal=0;
-        if (!listaPedidosCerrados.esVacia()) {
-            Nodo aux = listaPedidosCerrados.getInicio();
+        if (!listaPedidos.esVacia()) {
+            Nodo aux = listaPedidos.getInicio();
             
             while(aux != null){
                 Pedido pedido = (Pedido) aux.getDato();

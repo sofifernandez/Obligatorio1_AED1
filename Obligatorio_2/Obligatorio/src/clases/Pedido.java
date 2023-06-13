@@ -8,7 +8,7 @@ public class Pedido implements Comparable<Pedido>{
     private static int IDClase = 1;
     private int IDPedido;
 
-    private enum estado {ABIERTO , CERRADO , ProntoParaEntregar} //ES NECESARIO ESTO? O LO VAMOS MOVIENDO DE LISTA EN LISTA?
+    private String estado; //{ABIERTO , CERRADO , ProntoParaEntregar} //ES NECESARIO ESTO? O LO VAMOS MOVIENDO DE LISTA EN LISTA?
     private Cliente cli;
     private Pila pilaProductos; //class: ProductoCantidad
     private int unidadesTotales;
@@ -17,13 +17,28 @@ public class Pedido implements Comparable<Pedido>{
         IDPedido = this.IDClase++;
         pilaProductos = new Pila();
         unidadesTotales=0;
-    }
+    }  
     
+    public String getEstado(){
+        return estado;
+    }
+       
+    public void setEstado(String estado){
+        this.estado = estado;
+    }
 
     public int getIDPedido() {
         return IDPedido;
     }
+    
+    public Cliente getCliente(){
+        return cli;
+    }
 
+    public void setCliente(Cliente cli){
+        this.cli = cli;
+    } 
+    
     public void setIDPedido(int IDPedido) {
         this.IDPedido = IDPedido;
     }
@@ -83,7 +98,10 @@ public class Pedido implements Comparable<Pedido>{
         }
         return cantidad;
     }
-        
+    @Override  
+    public String toString(){
+        return "Pedido ID: " + this.getIDPedido() + " Estado: " + this.getEstado() + " Cliente: " + this.getCli().getCi();
+    }
 }
 
  

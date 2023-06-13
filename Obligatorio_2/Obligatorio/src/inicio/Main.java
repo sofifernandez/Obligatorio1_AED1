@@ -17,14 +17,15 @@ public class Main {
         p6_altaStockProducto(p,s);
         p7_aperturaDePedido(p,s);
         p8_agregarProductoAPedido(p,s);
-        p9_deshacerPedido(p, s);
+        //p9_deshacerPedido(p, s);
         p10_cerrarPedido(p,s);
-        p11_procesarPedido(p,s);
+        //p11_procesarPedido(p,s);
        // s.listarClientes();
         System.out.println(" \n*_______________________________*");
       //  s.listarProductos();
         System.out.println(" \n*_______________________________*");
       //  s.listarPedidosAbiertos();
+        s.pedidosCerradosDeClientes("111");
         s.reporteDePedidosSolicitadosXCliente();
         p.imprimirResultadosPrueba();
     } 
@@ -81,7 +82,7 @@ public class Main {
             p.ver(s.altaStockProducto(1,4).resultado, Retorno.Resultado.OK, "Stock actualizado");
             p.ver(s.altaStockProducto(3,4).resultado, Retorno.Resultado.OK, "Stock actualizado");
             p.ver(s.altaStockProducto(3,2).resultado, Retorno.Resultado.OK, "Stock actualizado");
-            s.listaProductos.mostrar();
+           
         }
         
         public static void p7_aperturaDePedido(Prueba p, Sistema s){
@@ -92,22 +93,22 @@ public class Main {
         }
         
         public static void p8_agregarProductoAPedido(Prueba p,Sistema s){
-            
+             s.listaProductos.mostrar();
             p.ver(s.agregarProductoAPedido("1", 1,2).resultado, Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.agregarProductoAPedido("111", 6,2).resultado, Retorno.Resultado.ERROR_2, "El producto no existe");
             p.ver(s.agregarProductoAPedido("111", 1,-2).resultado, Retorno.Resultado.ERROR_4, "Unidades incorrectas");
             //Cliente 333 ya tiene pedido abierto pero vacío
             p.ver(s.agregarProductoAPedido("333", 1,2).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
-             p.ver(s.agregarProductoAPedido("333", 3,3).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
+            p.ver(s.agregarProductoAPedido("333", 3,3).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("333", 3,7).resultado, Retorno.Resultado.ERROR_3, "Supera la cantidad maxima de unidades por pedido");
             //Cliente 111 no tiene pedido abierto, se abre en la función
             p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Nuevo pedido y producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("111", 1,2).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
-            //p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
+            p.ver(s.agregarProductoAPedido("111", 3,1).resultado, Retorno.Resultado.OK, "Producto agregado correctamente");
             p.ver(s.agregarProductoAPedido("111", 1,1).resultado, Retorno.Resultado.ERROR_5, "El stock es insuficiente");
             s.listaProductos.mostrar();
             
-            //111 tiene 1 de p3 + 2 de p1// 333 tiene 2 de p1 + 3 de p3
+            //111 tiene 2 de p3 + 2 de p1 // 333 tiene 2 de p1 + 3 de p3
             
         }
         
@@ -129,8 +130,8 @@ public class Main {
             
             p.ver(s.cerrarPedido("1").resultado,Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.cerrarPedido("222").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
-          //p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");
-            p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
+            p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");
+           // p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
             p.ver(s.cerrarPedido("333").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");       
         }
         

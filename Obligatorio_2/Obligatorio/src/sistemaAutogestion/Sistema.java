@@ -82,6 +82,8 @@ public class Sistema implements IObligatorio {
             if(ci.equals("333")){ // esto es para la prueba de eliminar cliente con un pedido abierto != null
                 Pedido pedido=new Pedido();
                 cliente.setPedidoAbierto(pedido);
+                pedido.setEstado("ABIERTO");
+                pedido.setCliente(cliente);
             }
 
             listaClientes.agregarOrd(cliente);
@@ -95,7 +97,7 @@ public class Sistema implements IObligatorio {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         Cliente cliente= getCliente(ci);
         if (cliente!=null) {
-            if (cliente.getListaPedidosCerrados().esVacia() && cliente.getPedidoAbierto() == null) //Si no no tiene pedidos cerrados ni abiertos se puede eliminar
+            if (cliente.getlistaPedidos().esVacia() && cliente.getPedidoAbierto() == null) //Si no no tiene pedidos cerrados ni abiertos se puede eliminar
             {
                 listaClientes.eliminarElemento(cliente);
                 r.resultado = Retorno.Resultado.OK;
@@ -217,6 +219,8 @@ public class Sistema implements IObligatorio {
         } else 
         {
                 cliente.setPedidoAbierto(new Pedido());
+                cliente.getPedidoAbierto().setEstado("ABIERTO");
+                cliente.getPedidoAbierto().setCliente(cliente);
                 r.resultado = Retorno.Resultado.OK;
         }
         return r;
@@ -264,11 +268,20 @@ public class Sistema implements IObligatorio {
        //ProductoCantidad prodCant=new ProductoCantidad(producto.getID(),unidades)
         ProductoCantidad prodCant=new ProductoCantidad(producto.getID()); //Aca le saque las unidades al constructor y se las cargo con el setunidades
         prodCant.setCantidad(unidades);                               // Porque de la forma que estaba antes al prodCant no le cargaba las unidades
-       
+        
         if(cliente.getPedidoAbierto() == null){ //Si el cliente no tiene pedido abierto, se le abre uno
             aperturaDePedido(cliente.getCi());
         }
-        cliente.getPedidoAbierto().getPilaProductos().push(prodCant);
+        if(!cliente.getPedidoAbierto().getPilaProductos().existeElemento(prodCant))
+        {
+            cliente.getPedidoAbierto().getPilaProductos().push(prodCant);
+        }
+        else{
+           ProductoCantidad prodViejo = (ProductoCantidad)cliente.getPedidoAbierto().getPilaProductos().obtenerElemento(prodCant).getDato();
+           prodViejo.setCantidad(prodViejo.getCantidad() + unidades);
+        }
+       
+        //cliente.getPedidoAbierto().getPilaProductos().push(prodCant);
         cliente.getPedidoAbierto().actualizarUnidades(unidades, "AGREGAR");
         //cliente.getPedidoAbierto().setUnidadesTotales(cliente.getPedidoAbierto().getUnidadesTotales()+unidades);
         producto.setStock(producto.getStock()-unidades);
@@ -340,8 +353,8 @@ public class Sistema implements IObligatorio {
             r.resultado = Retorno.Resultado.ERROR_2; //El cliente no tiene un pedido abierto
             return r;
         }
-        
-        cliente.getListaPedidosCerrados().agregarInicio(cliente.getPedidoAbierto());
+        cliente.getPedidoAbierto().setEstado("CERRADO");
+        cliente.getlistaPedidos().agregarInicio(cliente.getPedidoAbierto());
         colaPedidosCerrados.encolar(cliente.getPedidoAbierto());
         cliente.setPedidoAbierto(null);
         r.resultado = Retorno.Resultado.OK;
@@ -364,6 +377,8 @@ public class Sistema implements IObligatorio {
         int contador=0;
         while (contador < cantPedidos)
         {
+            Pedido miP = (Pedido)colaPedidosCerrados.obtenerPrimero();
+            miP.setEstado("ParaEntregar");       
             listaPedidosParaEntregar.agregarFinal(colaPedidosCerrados.obtenerPrimero());
             colaPedidosCerrados.desencolar();
             contador++;
@@ -407,14 +422,13 @@ public class Sistema implements IObligatorio {
                 Cliente cliente = (Cliente) aux.getDato();
                 if(cliente.getPedidoAbierto()!=null){
                     System.out.println("---------------------------------");
-                    System.out.println(cliente.toString());
-                    //System.out.println(cliente.getPedidoAbierto().getPilaProductos().getCantidad()); 
-                   cliente.getPedidoAbierto().getPilaProductos().mostrar(); 
+                    System.out.println(cliente.toString());                   
+                    cliente.getPedidoAbierto().getPilaProductos().mostrar(); 
                 }
                 aux = aux.getSiguiente();
             }
         } else {
-            System.out.println("N hay clientes en la lista");
+            System.out.println("No hay clientes en la lista");
         }
         return r;
     }
@@ -423,7 +437,25 @@ public class Sistema implements IObligatorio {
     public Retorno pedidosCerradosDeClientes(String ci) {
         Retorno r = new Retorno(Retorno.Resultado.OK);
         Cliente cliente= getCliente(ci);
-        cliente.getListaPedidosCerrados().mostrar();
+        
+        if(cliente == null){
+            r.resultado = Retorno.Resultado.ERROR_1;
+            return r;
+        }
+        ListaSimple listaPedidosCliente = cliente.getlistaPedidos();
+        Nodo aux = listaPedidosCliente.getInicio();
+
+        if (!listaPedidosCliente.esVacia()) {
+            while (aux != null) {
+                Pedido miP = (Pedido) aux.getDato();
+                if(miP.getEstado().equals("CERRADO")){
+                    System.out.println(miP + " ");
+                }
+                    aux = aux.getSiguiente();   
+            }
+        } else {
+            System.out.println("Esta vacia!");
+        }
         return r;
     }
 
@@ -451,7 +483,7 @@ public class Sistema implements IObligatorio {
         //ESTRATEGIA:
         //Agarrar la lista de productos, e ir uno por uno y buscarlos en los clientes? 
         
-        //Cliente -->ListaPedidosCerrados-->Pedido --> cola de ProductoCantidad
+        //Cliente -->listaPedidos-->Pedido --> cola de ProductoCantidad
         //      1   2   3   4  (ID de productos) --> fila 0
         //---------------------------
         // A    0   3   1   0   
@@ -498,8 +530,8 @@ public class Sistema implements IObligatorio {
                 
                 Producto producto= getProductoPorID(Integer.parseInt(mat2[0][j])); //esto funciona
 
+                int cantidadTotal=cliente.cantidadProdTotal(producto.getID());
                 
-                int cantidadTotal=cliente.cantidadProdTotal(producto.getID()); 
                 mat2[i][j]=Integer.toString(cantidadTotal);
             }
         }
