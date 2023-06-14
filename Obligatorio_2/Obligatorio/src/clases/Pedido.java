@@ -84,7 +84,7 @@ public class Pedido implements Comparable<Pedido>{
     
     @Override
     public int compareTo(Pedido o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
     public int cantProducto(int IDProd){ //devuelve la cantidad de unidades del producto tal, si no está devuelve 0
@@ -100,7 +100,7 @@ public class Pedido implements Comparable<Pedido>{
     }
     @Override  
     public String toString(){
-        getPilaProductos().mostrar();
+        //getPilaProductos().mostrar();
         return "Pedido ID: " + this.getIDPedido() + " Estado: " + this.getEstado() + " Cliente: " + this.getCli().getCi();
     }
 }

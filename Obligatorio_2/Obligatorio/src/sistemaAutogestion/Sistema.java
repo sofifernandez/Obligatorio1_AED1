@@ -236,9 +236,6 @@ public class Sistema implements IObligatorio {
         ProductoCantidad prodCant=new ProductoCantidad(producto.getID()); 
         prodCant.setCantidad(unidades);                               
         
-        if(cliente.getPedidoAbierto() == null){ //Si el cliente no tiene pedido abierto, se le abre uno
-            aperturaDePedido(cliente.getCi());
-        }
         if(!cliente.getPedidoAbierto().getPilaProductos().existeElemento(prodCant)) //Si no tiene agregado ya ese producto agregarlo
         {
             cliente.getPedidoAbierto().getPilaProductos().push(prodCant);
@@ -345,8 +342,17 @@ public class Sistema implements IObligatorio {
         while (contador < cantPedidos)
         {
             Pedido miP = (Pedido)colaPedidosCerrados.obtenerPrimero();
+            Nodo aux = miP.getPilaProductos().getTope();
+            while(aux != null){
+                ProductoCantidad miProdu = (ProductoCantidad) aux.getDato();
+                Producto producto = getProductoPorID(miProdu.getID());
+                producto.setPedidosProducto(producto.getPedidosProducto()-1);
+                
+                aux = aux.getSiguiente();
+            }
+            
             miP.setEstado("ParaEntregar");       
-            listaPedidosParaEntregar.agregarFinal(colaPedidosCerrados.obtenerPrimero());
+            listaPedidosParaEntregar.agregarFinal(miP);
             colaPedidosCerrados.desencolar();
             contador++;
         }
@@ -411,17 +417,21 @@ public class Sistema implements IObligatorio {
         }
         ListaSimple listaPedidosCliente = cliente.getlistaPedidos();
         Nodo aux = listaPedidosCliente.getInicio();
-
-        if (!listaPedidosCliente.esVacia()) {
+        int cantPCerrados = 0;
+        if (!listaPedidosCliente.esVacia() ) {
             while (aux != null) {
                 Pedido miP = (Pedido) aux.getDato();
                 if(miP.getEstado().equals("CERRADO")){
                     System.out.println(miP + " ");
+                    cantPCerrados ++;
                 }
                     aux = aux.getSiguiente();   
             }
+            if(cantPCerrados == 0){
+                System.out.println("El cliente no tiene pedidos cerrados");
+            }
         } else {
-            System.out.println("Esta vacia!");
+            System.out.println("El cliente no tiene pedidos cerrados");
         }
         return r;
     }

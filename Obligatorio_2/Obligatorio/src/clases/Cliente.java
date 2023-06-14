@@ -9,8 +9,6 @@ public class Cliente implements Comparable<Cliente> {
     private String ci;
     private ListaSimple listaPedidos;
     private Pedido pedidoAbierto;
-    //Este atributo es para forzar el ERROR2 de eliminarCliente
-    //private String pedidoAbiertoString;
 
      public Cliente(String nombre, String ci) {
         this.setNombre(nombre);
@@ -42,19 +40,6 @@ public class Cliente implements Comparable<Cliente> {
 
     public void setPedidoAbierto(Pedido pedidoAbierto) {
         this.pedidoAbierto = pedidoAbierto;
-    }
-
-    public int unidadesTotalesProducto(int IDProducto){
-         Nodo auxPedidos = listaPedidos.getInicio();
-         
-         int unidadesTot=0;
-         while(auxPedidos!=null){ //recorrer la lista de pedidosCerrados 
-             Pedido pedido = (Pedido) auxPedidos.getDato();
-             unidadesTot=unidadesTot+pedido.cantProducto(IDProducto); //sumarle las unidades de ese producto, si no está devuelve un 0
-             
-             auxPedidos=auxPedidos.getSiguiente();
-         }
-         return unidadesTot;
     }
     
     public int cantidadProdTotal(int IDProd){
