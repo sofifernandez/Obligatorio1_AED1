@@ -51,7 +51,6 @@ public class Main {
         }
         
         public static void p3_eliminarCliente(Prueba p, Sistema s){
-            //p.ver(s.eliminarCliente("444").resultado, Retorno.Resultado.OK, "Cliente eliminado");
             p.ver(s.eliminarCliente("333").resultado, Retorno.Resultado.ERROR_2, "Cliente tiene pedido abierto o cerrado");
             p.ver(s.eliminarCliente("1").resultado, Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.eliminarCliente("555").resultado, Retorno.Resultado.OK, "Cliente eliminado");
@@ -128,9 +127,7 @@ public class Main {
             p.ver(s.deshacerPedido("111", -1).resultado, Retorno.Resultado.ERROR_2, "Numero de acciones incorrecto");
             p.ver(s.deshacerPedido("111", 5).resultado, Retorno.Resultado.ERROR_3, "La cantidad de acciones solicitadas supere la cantidad de productos ");
             p.ver(s.deshacerPedido("111", 2).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente");
-            p.ver(s.deshacerPedido("333", 1).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente");
-            
-           
+            p.ver(s.deshacerPedido("333", 1).resultado, Retorno.Resultado.OK, "Pedido restaurado correctamente"); 
         }
         
         public static void p10_cerrarPedido(Prueba p, Sistema s){
@@ -138,9 +135,7 @@ public class Main {
             p.ver(s.cerrarPedido("1").resultado,Retorno.Resultado.ERROR_1, "El cliente no existe");
             p.ver(s.cerrarPedido("111").resultado,Retorno.Resultado.ERROR_2,  "El cliente no tiene pedido abierto");
             p.ver(s.cerrarPedido("333").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente"); 
-            p.ver(s.cerrarPedido("222").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");
-           
-           
+            p.ver(s.cerrarPedido("222").resultado,Retorno.Resultado.OK,  "Pedido cerrado correctamente");  
         }
         
         public static void p11_procesarPedido(Prueba p, Sistema s){

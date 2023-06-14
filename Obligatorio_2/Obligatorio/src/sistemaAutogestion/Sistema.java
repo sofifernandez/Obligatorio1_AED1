@@ -254,9 +254,6 @@ public class Sistema implements IObligatorio {
 
     
     @Override
-    //OJO ACÁ, CADA VEZ QUE SE ELIMINA UN PRODUCTO DE UN PEDIDO HAY QUE ACTUALIZAR EL STOCK
-    // Y LAS UNIDADES TOTALES QUE HAY EN EL PEDIDO
-    // y Los pedidoProducto
     public Retorno deshacerPedido(String ciCliente, int cantAccionesDeshacer){
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         Cliente cliente= getCliente(ciCliente);
@@ -325,7 +322,7 @@ public class Sistema implements IObligatorio {
         return r;
     }
 
-    @Override //ACÁ FALTAN RESTAURAR LOS PEDIDOS DE CADA PRODUCTO (porque dice que sea en pedidos cerrados y abiertos)
+    @Override
     public Retorno procesarPedido(int cantPedidos) {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         if(cantPedidos<=0){
@@ -338,22 +335,27 @@ public class Sistema implements IObligatorio {
             return r;
         }
         
+        //Procesar 
         int contador=0;
         while (contador < cantPedidos)
         {
             Pedido miP = (Pedido)colaPedidosCerrados.obtenerPrimero();
+            //Para cada uno de los productos del pedido hay que restaurar el pedidoProducto
             Nodo aux = miP.getPilaProductos().getTope();
             while(aux != null){
                 ProductoCantidad miProdu = (ProductoCantidad) aux.getDato();
                 Producto producto = getProductoPorID(miProdu.getID());
                 producto.setPedidosProducto(producto.getPedidosProducto()-1);
-                
                 aux = aux.getSiguiente();
             }
-            
-            miP.setEstado("ParaEntregar");       
-            listaPedidosParaEntregar.agregarFinal(miP);
-            colaPedidosCerrados.desencolar();
+            miP.setEstado("ParaEntregar"); //Se le cambia el estado al pedido       
+            listaPedidosParaEntregar.agregarFinal(miP);//Se agrega a la listaPedidosParaEntregar
+            colaPedidosCerrados.desencolar();//Se elimina de la cola
+            //Cambiar el estado en el cliente
+            String cedulaCliente=miP.getCli().getCi();
+            Cliente cliente=getCliente(cedulaCliente);
+            Pedido pedido=(Pedido) cliente.getlistaPedidos().obtenerElemento(miP).getDato();
+            pedido.setEstado("ParaEntregar"); 
             contador++;
         }
         r.resultado = Retorno.Resultado.OK;
@@ -373,10 +375,7 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno listarProductos() { //ESTE ES RECURSIVA
-        //Se muestran todos los productos en el orden que fueron registrados. Se muestra sus datos y el stock disponible de dicho producto.
-        //Si agregamos productos con 'agregarFinal() quedaría no?' //Si SNIORA, ya lo cambie en agregar producto
-        //Y en la recursividad hay que mostrar a la ida
+    public Retorno listarProductos() { //RECURSIVA
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         listaProductos.mostrarRec();
         r.resultado = Retorno.Resultado.OK;
@@ -384,8 +383,6 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    //Como mostramos una pila??? Qué información de los pedidos habría que mostrar??
-    //FALTA MOSTRAR QUÉ PRODUCTOS TIENE EL PEDIDO Y LAS UNIDADES
     public Retorno listarPedidosAbiertos() {
         Retorno r = new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
         Nodo aux = listaClientes.getInicio();
@@ -437,35 +434,19 @@ public class Sistema implements IObligatorio {
     }
 
     @Override
-    public Retorno productosParaEntregar() { //ESTA ES RECURSIVA
-        //Agregar al final y mostrar en orden que fueron agregados
+    public Retorno productosParaEntregar() { //RECURSIVA
         Retorno r = new Retorno(Retorno.Resultado.OK);
         listaPedidosParaEntregar.mostrarRec();
         return r;
     }
 
-    @Override //TODOS LOS CLIENTES? SI NO TIENE PEDIDOS CERRADOS VA CON UN 0 EN TODOS LOS PRODUCTO?
-    //hay que sumar la cantidad de unidades de cada producto si aparece en más de un pedido cerrado?
+    @Override
     public Retorno reporteDePedidosSolicitadosXCliente() {
+        
         //Crear la matriz primero y después mostrarla
         int rows=listaClientes.getCantidad()+1;
         int columns=listaProductos.getCantidad()+1;
-
-        //Object[][] mat= new Object[rows][columns];
-        String[][] mat2 = new String[rows][columns];
-        
-        //ESTRATEGIA:
-        //Agarrar la lista de productos, e ir uno por uno y buscarlos en los clientes? 
-        
-        //Cliente -->listaPedidos-->Pedido --> cola de ProductoCantidad
-        //      1   2   3   4  (ID de productos) --> fila 0
-        //---------------------------
-        // A    0   3   1   0   
-        // B
-        // C
-        // D
-        //(Clientes)
-               
+        String[][] mat2 = new String[rows][columns];       
         
         //Poner los nombres de los clientes en la Columna 0
         Nodo auxCliente = listaClientes.getInicio();
@@ -476,10 +457,9 @@ public class Sistema implements IObligatorio {
                 auxCliente = auxCliente.getSiguiente();
             }   
         }
-        
-        
-        
-        //Poner los nombres de los productos en la fila 0
+
+        //Poner los nombres de los productos en la fila 0 
+        //(en realidad ponemos el ID porque queda mejor al mostrarla)
         Nodo auxProd = listaProductos.getInicio();
         while (auxProd != null) {
             for (int j=1; j < mat2[0].length; j++){
@@ -490,36 +470,24 @@ public class Sistema implements IObligatorio {
         }
         
         //POPULAR LA MATRIZ
-        //cantidadProdTotal
-        
-        //mat2[fila i][columna j]
-        //mat2[0][j] --> nombres Productos
-        //mat2[i][0] --> nombres clientes
-        
-        
-        
         for (int i = 1; i < mat2.length; i++) { //Dentro de una fila, o sea de un producto
             Cliente cliente=getCliente(mat2[i][0]); //esto funciona
             for (int j = 1; j < mat2[i].length; j++) { //Dentro de una columna, o sea cliente
-                
-                Producto producto= getProductoPorID(Integer.parseInt(mat2[0][j])); //esto funciona
-
+                Producto producto= getProductoPorID(Integer.parseInt(mat2[0][j])); 
                 int cantidadTotal=cliente.cantidadProdTotal(producto.getID());
-                
                 mat2[i][j]=Integer.toString(cantidadTotal);
             }
         }
         
-        
         //MOSTRAR
+        mat2[0][0]=" ";
         for (int i = 0; i < mat2.length; i++) {
             for (int j = 0; j < mat2[i].length; j++) {
-                System.out.print(mat2[i][j] + " ");
+                System.out.print( mat2[i][j] + "\t");
             }
             System.out.println();
         }
-        
-        
+    
         Retorno r = new Retorno(Retorno.Resultado.OK);
         return r;
     }

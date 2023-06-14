@@ -7,7 +7,6 @@ public class Pedido implements Comparable<Pedido>{
     
     private static int IDClase = 1;
     private int IDPedido;
-
     private String estado; //{ABIERTO , CERRADO , ProntoParaEntregar} //ES NECESARIO ESTO? O LO VAMOS MOVIENDO DE LISTA EN LISTA?
     private Cliente cli;
     private Pila pilaProductos; //class: ProductoCantidad
